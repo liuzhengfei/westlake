@@ -35,41 +35,47 @@
                 android:id="@+id/home_page"
                 style="@style/main_tab_bottom"
                 android:layout_marginTop="2.0dip"
-                android:drawableTop="@drawable/homepage_u"
+                android:drawableTop="@drawable/home_page_bg"
                 android:tag="home_page"
-                android:text="@string/honmepage" />
+                android:text="@string/honmepage"
+                android:textColor="@drawable/radio_font_color"
+                android:checked="true" />
 
             <RadioButton
                 android:id="@+id/search_page"
                 style="@style/main_tab_bottom"
                 android:layout_marginTop="2.0dip"
-                android:drawableTop="@drawable/navigation_u"
+                android:drawableTop="@drawable/search_page_bg"
                 android:tag="search_page"
-                android:text="@string/search" />
+                android:text="@string/search"
+                android:textColor="@drawable/radio_font_color" />
 
             <RadioButton
                 android:id="@+id/sites_page"
                 style="@style/main_tab_bottom"
                 android:layout_marginTop="2.0dip"
-                android:drawableTop="@drawable/sites_u"
+                android:drawableTop="@drawable/sites_page_bg"
                 android:tag="sites_page"
-                android:text="@string/sites" />
+                android:text="@string/sites"
+                android:textColor="@drawable/radio_font_color" />
 
             <RadioButton
                 android:id="@+id/knows_page"
                 style="@style/main_tab_bottom"
                 android:layout_marginTop="2.0dip"
-                android:drawableTop="@drawable/wiki_u"
+                android:drawableTop="@drawable/knows_page_bg"
                 android:tag="knows_page"
-                android:text="@string/knows" />
+                android:text="@string/knows"
+                android:textColor="@drawable/radio_font_color" />
             
             <RadioButton
                 android:id="@+id/more_page"
                 style="@style/main_tab_bottom"
                 android:layout_marginTop="2.0dip"
-                android:drawableTop="@drawable/more_u"
+                android:drawableTop="@drawable/more_page_bg"
                 android:tag="more_page"
-                android:text="@string/honmepage" />
+                android:text="@string/honmepage"
+                android:textColor="@drawable/radio_font_color" />
         </RadioGroup>
     </LinearLayout>
 
