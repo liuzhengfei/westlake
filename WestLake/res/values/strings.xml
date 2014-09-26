@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WestLake</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="honmepage">首页</string>
+    <string name="search">导览</string>
+    <string name="sites">景点</string>
+    <string name="knows">百科</string>
+    <string name="more">更多</string>
+
+</resources>
