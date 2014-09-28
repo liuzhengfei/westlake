@@ -3,6 +3,7 @@ package com.example.westlake;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
@@ -14,12 +15,14 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//ÂèñÊ∂àÊ†áÈ¢òÊ†è
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
 		setContentView(R.layout.activity_main);
 		
-		 // µ¿˝ªØTabHost
         mHost=this.getTabHost();
         
-        //ÃÌº”—°œÓø®
         mHost.addTab(mHost.newTabSpec("ONE").setIndicator("ONE")
         			.setContent(new Intent(this,OneActivity.class)));
         mHost.addTab(mHost.newTabSpec("TWO").setIndicator("TWO")
