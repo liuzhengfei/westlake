@@ -8,9 +8,17 @@
     <string name="sites">景点</string>
     <string name="knows">百科</string>
     <string name="more">更多</string>
+    <string name="active">文化活动</string>
+    <string name="food">美食活动</string>
+    <string name="show">演出活动</string>
+    <string name="exhibition">文化会展</string>
+    <string name="westlake">西湖寻梅</string>
     
     <color name="black">#000000</color>
     <color name="gold">#FFD700</color>
-    <color name="azure">#F0FFFF</color><!-- 蔚蓝色 -->
+    <color name="azure">#F0FFFF</color>
+    <color name="selected">#E77D29</color>
+    <color name="disselected">#010101</color>
+    
 
 </resources>

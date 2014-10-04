@@ -74,7 +74,7 @@
                 android:layout_marginTop="2.0dip"
                 android:drawableTop="@drawable/more_page_bg"
                 android:tag="more_page"
-                android:text="@string/honmepage"
+                android:text="@string/more"
                 android:textColor="@drawable/radio_font_color" />
         </RadioGroup>
     </LinearLayout>
