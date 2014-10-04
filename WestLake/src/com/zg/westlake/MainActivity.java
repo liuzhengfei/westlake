@@ -26,15 +26,15 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
         mHost=this.getTabHost();
         
         mHost.addTab(mHost.newTabSpec("ONE").setIndicator("ONE")
-        			.setContent(new Intent(this,OneActivity.class)));
+        			.setContent(new Intent(this,HomePageActivity.class)));
         mHost.addTab(mHost.newTabSpec("TWO").setIndicator("TWO")
-        		.setContent(new Intent(this,TwoActivity.class)));
+        		.setContent(new Intent(this,SearchPageActivity.class)));
         mHost.addTab(mHost.newTabSpec("THREE").setIndicator("THREE")
-        		.setContent(new Intent(this,ThreeActivity.class)));
+        		.setContent(new Intent(this,SitesPageActivity.class)));
         mHost.addTab(mHost.newTabSpec("FOUR").setIndicator("FOUR")
-        		.setContent(new Intent(this,FourActivity.class)));
+        		.setContent(new Intent(this,KnowsPageActivity.class)));
         mHost.addTab(mHost.newTabSpec("FIVE").setIndicator("FIVE")
-        		.setContent(new Intent(this,FiveActivity.class)));
+        		.setContent(new Intent(this,MorePageActivity.class)));
         
         radioderGroup = (RadioGroup) findViewById(R.id.main_radio);
 		radioderGroup.setOnCheckedChangeListener(this);

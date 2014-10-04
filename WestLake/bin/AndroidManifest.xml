@@ -22,11 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="OneActivity"/>
-		<activity android:name="TwoActivity"/>
-		<activity android:name="ThreeActivity"/>
-		<activity android:name="FourActivity"/>
-		<activity android:name="FiveActivity"/>
+        <activity android:name="HomePageActivity"/>
+		<activity android:name="SearchPageActivity"/>
+		<activity android:name="SitesPageActivity"/>
+		<activity android:name="KnowsPageActivity"/>
+		<activity android:name="MorePageActivity"/>
 		<activity android:name="com.zg.westlake.homepage.ui.HomePageActiveActivity" />
 		<activity android:name="com.zg.westlake.homepage.ui.HomePageFoodActivity" />
 		<activity android:name="com.zg.westlake.homepage.ui.HomePageShowActivity" />

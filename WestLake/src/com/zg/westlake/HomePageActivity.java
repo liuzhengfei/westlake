@@ -26,7 +26,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 
-public class OneActivity extends ActivityGroup implements OnClickListener {
+public class HomePageActivity extends ActivityGroup implements OnClickListener {
 
 	private ViewPager viewPager;
 	private String titleArray[] = { "文化活动", "美食活动", "演出活动", "文化会展", "西湖寻梅" };

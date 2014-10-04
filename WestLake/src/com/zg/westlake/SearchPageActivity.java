@@ -5,7 +5,7 @@ import com.zg.westlake.R;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class TwoActivity extends Activity {
+public class SearchPageActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
