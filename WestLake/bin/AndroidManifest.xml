@@ -32,6 +32,7 @@
 		<activity android:name="com.zg.westlake.homepage.ui.HomePageShowActivity" />
 		<activity android:name="com.zg.westlake.homepage.ui.HomePageExhibitionActivity" />
 		<activity android:name="com.zg.westlake.homepage.ui.HomePageWestLakeActivity" />
+		<activity android:name="com.zg.westlake.homepage.ui.HomePagePullRefreshActivity" />
     </application>
 
 </manifest>

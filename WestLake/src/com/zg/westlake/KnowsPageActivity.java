@@ -11,7 +11,7 @@ public class KnowsPageActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.fouractivity);
+		this.setContentView(R.layout.knows_page_activity);
 	}
 
 }

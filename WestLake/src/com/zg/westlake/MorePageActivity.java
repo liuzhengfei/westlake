@@ -11,7 +11,7 @@ public class MorePageActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.fiveactivity);
+		this.setContentView(R.layout.more_page_activity);
 	}
 
 }

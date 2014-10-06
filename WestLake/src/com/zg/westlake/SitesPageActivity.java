@@ -11,7 +11,7 @@ public class SitesPageActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.threeactivity);
+		this.setContentView(R.layout.sites_page_activity);
 	}
 
 }

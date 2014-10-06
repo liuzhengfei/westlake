@@ -1,6 +1,7 @@
 package com.zg.westlake;
 
 import com.zg.westlake.R;
+import com.zg.westlake.homepage.ui.HomePagePullRefreshActivity;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -34,7 +35,7 @@ public class MainActivity extends TabActivity implements OnCheckedChangeListener
         mHost.addTab(mHost.newTabSpec("FOUR").setIndicator("FOUR")
         		.setContent(new Intent(this,KnowsPageActivity.class)));
         mHost.addTab(mHost.newTabSpec("FIVE").setIndicator("FIVE")
-        		.setContent(new Intent(this,MorePageActivity.class)));
+        		.setContent(new Intent(this,HomePagePullRefreshActivity.class)));
         
         radioderGroup = (RadioGroup) findViewById(R.id.main_radio);
 		radioderGroup.setOnCheckedChangeListener(this);

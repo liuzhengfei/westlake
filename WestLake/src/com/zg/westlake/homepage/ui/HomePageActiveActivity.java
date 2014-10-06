@@ -61,7 +61,7 @@ public class HomePageActiveActivity extends Activity implements
 		// 定义一个布局并设置参数
 		LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT,
-				LinearLayout.LayoutParams.FILL_PARENT);
+				LinearLayout.LayoutParams.WRAP_CONTENT);
 
 		// 初始化引导图片列表
 		for (int i = 0; i < pics.length; i++) {

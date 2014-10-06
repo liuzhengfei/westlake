@@ -46,7 +46,7 @@ public class HomePageActivity extends ActivityGroup implements OnClickListener {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		this.setContentView(R.layout.oneactivity);
+		this.setContentView(R.layout.home_page_activity);
 		linearLayout = (LinearLayout) super.findViewById(R.id.linearlayout);
 		viewPager = (ViewPager) findViewById(R.id.viewpager);
 		horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalscrollview);
@@ -145,6 +145,7 @@ public class HomePageActivity extends ActivityGroup implements OnClickListener {
 			textView.setWidth(width);
 			textView.setHeight(height - 30);
 			textView.setGravity(Gravity.CENTER);
+			textView.setBackgroundResource(R.drawable.home_page_title_shu);
 			textView.setId(i);
 
 			// 设置文本监听事件
