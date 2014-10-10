@@ -1,0 +1,25 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/photoAndVideo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="0dp"
+    android:orientation="vertical"
+    android:paddingBottom="0dp" >
+
+    <com.zg.westlake.homepage.common.MyViewPager
+        android:id="@+id/title_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="top"
+        android:background="#ffffff"
+        android:flipInterval="300"
+        android:persistentDrawingCache="animation" />
+    <LinearLayout
+        android:id="@+id/imagelinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+</FrameLayout>

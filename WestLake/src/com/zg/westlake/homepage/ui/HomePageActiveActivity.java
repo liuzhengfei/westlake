@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -34,6 +36,11 @@ public class HomePageActiveActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		// 去除标题栏
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// 设置全屏，取消状态栏
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.home_page_cultureactive);
 		// 初始化组件
