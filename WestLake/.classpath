@@ -5,5 +5,10 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="lib" path="F:/文化遗产项目/slidingmenu.jar"/>
+	<classpathentry exported="true" kind="lib" path="F:/文化遗产项目/libthrift-0.9.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="F:/文化遗产项目/slf4j-log4j12-1.6.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="F:/文化遗产项目/log4j-1.2.17.jar"/>
+	<classpathentry exported="true" kind="lib" path="F:/文化遗产项目/slf4j-api-1.6.4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

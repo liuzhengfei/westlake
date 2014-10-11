@@ -1,179 +1,81 @@
 package com.zg.westlake.homepage.ui;
 
-import java.util.ArrayList;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TFramedTransport;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
+import com.dm.thrift.Dm_ActivitySimplifyList;
+import com.zg.socket.SocketUtil;
 import com.zg.westlake.R;
-import com.zg.westlake.homepage.common.ViewPagerAdapter;
+import com.zg.westlake.homepage.common.NewsAdapter;
+import com.zg.westlake.pullrefresh.RefreshableView;
+import com.zg.westlake.pullrefresh.RefreshableView.OnRefreshListener;
 
-public class HomePageActiveActivity extends Activity implements
-		OnClickListener, OnPageChangeListener {
-
-	// 定义ViewPager对象
-	private ViewPager viewPager;
-	// 定义ViewPager适配器
-	private ViewPagerAdapter vpAdapter;
-	// 定义一个ArrayList来存放View
-	private ArrayList<View> views;
-	// 引导图片资源
-	private static final int[] pics = { R.drawable.image_1, R.drawable.image_2,
-			R.drawable.image_3, R.drawable.image_4 };
-	// 底部小点的图片
-	private ImageView[] points;
-	// 记录当前选中位置
-	private int currentIndex;
+public class HomePageActiveActivity extends Activity {
+	private NewsAdapter newsAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
 		// 去除标题栏
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// 设置全屏，取消状态栏
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// 取消状态栏，充满全屏
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.home_page_cultureactive);
-		// 初始化组件
-		initView();
-		// 初始化数据
-		initData();
+		this.setContentView(R.layout.home_page_food);
+
+		final RefreshableView listview = (RefreshableView) findViewById(R.id.foodlistview);
+		newsAdapter = new NewsAdapter(this);
+		listview.setAdapter(newsAdapter);
+
+		listview.setonRefreshListener(new OnRefreshListener() {
+			public void onRefresh() {
+
+				new AsyncTask<Void, Void, Void>() {
+					// ...b表示多个参数
+					protected Void doInBackground(Void... params) {
+						try {
+							//
+							Thread.sleep(1000);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+						// 增加一条数据到list中
+						// data.addFirst("刷新后内容：每天都是新的一天！！！，親！要努力奋斗哦！！！");
+
+						return null;
+					}
+
+					protected void onPostExecute(Void result) {
+						newsAdapter.notifyDataSetChanged();
+						listview.onRefreshComplete();
+					}
+
+				}.execute();
+			}
+		});
 	}
-
-	/**
-	 * 初始化组件
-	 */
-	private void initView() {
-		// 实例化ArrayList对象
-		views = new ArrayList<View>();
-		// 实例化ViewPager
-		viewPager = (ViewPager) findViewById(R.id.imageviewpager);
-		// 实例化ViewPager适配器
-		vpAdapter = new ViewPagerAdapter(views);
-	}
-
-	/**
-	 * 初始化数据
-	 */
-	private void initData() {
-		// 定义一个布局并设置参数
-		LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.FILL_PARENT,
-				LinearLayout.LayoutParams.WRAP_CONTENT);
-
-		// 初始化引导图片列表
-		for (int i = 0; i < pics.length; i++) {
-			ImageView iv = new ImageView(this);
-			iv.setLayoutParams(mParams);
-			iv.setImageResource(pics[i]);
-			views.add(iv);
+	
+	
+	//调用获取图片接口
+	Runnable runnable = new Runnable() {
+		TTransport transport = null;
+		@Override
+		public void run() {
+			transport = new TSocket(SocketUtil.SOCKETIP, SocketUtil.PORT, SocketUtil.TIMEOUT);
+			TProtocol protocol = new TBinaryProtocol(transport);
+			
 		}
-
-		// 设置数据
-		// 前面的views中没有数据 在前面的循环中才插入数据 而此时vpAdapter中已经有数据说明
-		// 初始化adapter的时候 参数传递是传引用
-		viewPager.setAdapter(vpAdapter);
-		// 设置监听
-		viewPager.setOnPageChangeListener(this);
-
-		// 初始化底部小点
-		initPoint();
-	}
-
-	/**
-	 * 初始化底部小点
-	 */
-	private void initPoint() {
-		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.imagelinearLayout);
-
-		points = new ImageView[pics.length];
-
-		// 循环取得小点图片
-		for (int i = 0; i < pics.length; i++) {
-			// 得到一个LinearLayout下面的每一个子元素
-			points[i] = (ImageView) linearLayout.getChildAt(i);
-			// 默认都设为灰色
-			points[i].setEnabled(true);
-			// 给每个小点设置监听
-			points[i].setOnClickListener(this);
-			// 设置位置tag，方便取出与当前位置对应
-			points[i].setTag(i);
-		}
-
-		// 设置当面默认的位置
-		currentIndex = 0;
-		// 设置为白色，即选中状态
-		points[currentIndex].setEnabled(false);
-	}
-
-	/**
-	 * 当滑动状态改变时调用
-	 */
-	@Override
-	public void onPageScrollStateChanged(int arg0) {
-	}
-
-	/**
-	 * 当当前页面被滑动时调用
-	 */
-
-	@Override
-	public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-	}
-
-	/**
-	 * 当新的页面被选中时调用
-	 */
-
-	@Override
-	public void onPageSelected(int position) {
-		// 设置底部小点选中状态
-		setCurDot(position);
-	}
-
-	/**
-	 * 通过点击事件来切换当前的页面
-	 */
-	@Override
-	public void onClick(View v) {
-		int position = (Integer) v.getTag();
-		setCurView(position);
-		setCurDot(position);
-	}
-
-	/**
-	 * 设置当前页面的位置
-	 */
-	private void setCurView(int position) {
-		// 排除异常情况
-		if (position < 0 || position >= pics.length) {
-			return;
-		}
-		viewPager.setCurrentItem(position);
-	}
-
-	/**
-	 * 设置当前的小点的位置
-	 */
-	private void setCurDot(int positon) {
-		// 排除异常情况
-		if (positon < 0 || positon > pics.length - 1 || currentIndex == positon) {
-			return;
-		}
-		points[positon].setEnabled(false);
-		points[currentIndex].setEnabled(true);
-
-		currentIndex = positon;
-	}
+	};
 
 }

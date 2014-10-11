@@ -181,4 +181,5 @@ public class NewsAdapter extends BaseAdapter {
 
 		currentIndex = positon;
 	}
+	
 }
