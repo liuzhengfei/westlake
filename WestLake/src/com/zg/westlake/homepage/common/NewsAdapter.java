@@ -1,10 +1,24 @@
 package com.zg.westlake.homepage.common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TFramedTransport;
+import org.apache.thrift.transport.TSocket;
+
+import com.dm.thrift.DmService;
+import com.dm.thrift.Dm_ActivitySimplify;
+import com.dm.thrift.Dm_PreImageList;
+import com.zg.socket.SocketUtil;
 import com.zg.westlake.R;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -26,22 +40,25 @@ public class NewsAdapter extends BaseAdapter {
 	// 定义一个ArrayList来存放View
 	private ArrayList<View> views;
 	// 引导图片资源
-	private static final int[] PICS = { R.drawable.image_1, R.drawable.image_2,
-			R.drawable.image_3, R.drawable.image_4 };
+//	private static final int[] picImgList = { R.drawable.image_1, R.drawable.image_2,
+//			R.drawable.image_3, R.drawable.image_4 };
+	//头部图片资源
+	private List<Map<String,Object>> picImgList; 
+	
 	private ViewPager viewPager;
-	Context mContext;
+	private Context mContext;
 	private View topView;
 	// 底部小点的图片
 	private ImageView[] points;
 	// 记录当前选中位置
 	private int currentIndex;
 
-	public NewsAdapter(Context context) {
+	public NewsAdapter(Context context,List<Map<String,Object>> picImgList) {
 		// TODO Auto-generated constructor stub
 		mContext = context;
+		this.picImgList = picImgList;
 		views = new ArrayList<View>();
 		vpAdapter = new ViewPagerAdapter(views);
-
 	}
 
 	@Override
@@ -109,11 +126,12 @@ public class NewsAdapter extends BaseAdapter {
 			viewPager = (ViewPager) topView.findViewById(R.id.title_viewpager);
 			viewPager.setLayoutParams(layoutParams);
 
-			for (int i = 0; i < PICS.length; i++) {
+			for (int i = 0; i < picImgList.size(); i++) {
+				Map<String,Object> m=(Map<String,Object>) picImgList.get(i);
 				ImageView image = new ImageView(mContext);
 				image.setBackgroundColor(Color.WHITE);
 				image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				image.setImageResource(PICS[i]);
+				image.setImageBitmap((Bitmap) m.get("titleImg"));
 				views.add(image);
 			}
 
@@ -150,8 +168,8 @@ public class NewsAdapter extends BaseAdapter {
 	private void initPoint() {
 		LinearLayout lineLayout = (LinearLayout) topView
 				.findViewById(R.id.imagelinearLayout);
-		points = new ImageView[PICS.length];
-		for (int j = 0; j < PICS.length; j++) {
+		points = new ImageView[picImgList.size()];
+		for (int j = 0; j < picImgList.size(); j++) {
 			ImageView pointImgView = new ImageView(mContext);
 			pointImgView.setImageResource(R.drawable.point);
 			pointImgView.setPadding(15, 15, 15, 15);
@@ -173,7 +191,7 @@ public class NewsAdapter extends BaseAdapter {
 	 */
 	private void setCurDot(int positon) {
 		// 排除异常情况
-		if (positon < 0 || positon > PICS.length - 1 || currentIndex == positon) {
+		if (positon < 0 || positon > picImgList.size() - 1 || currentIndex == positon) {
 			return;
 		}
 		points[positon].setEnabled(false);
