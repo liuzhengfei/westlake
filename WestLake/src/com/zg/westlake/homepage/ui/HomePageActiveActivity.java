@@ -23,17 +23,20 @@ import android.view.WindowManager;
 
 import com.dm.thrift.DmService;
 import com.dm.thrift.Dm_ActivitySimplify;
-import com.dm.thrift.Dm_PreImageList;
+import com.dm.thrift.Dm_ActivitySimplifyList;
 import com.zg.socket.SocketUtil;
 import com.zg.westlake.R;
 import com.zg.westlake.homepage.common.NewsAdapter;
 import com.zg.westlake.homepage.common.Picutil;
+import com.zg.westlake.homepage.common.TitleImgResult;
 import com.zg.westlake.pullrefresh.RefreshableView;
 import com.zg.westlake.pullrefresh.RefreshableView.OnRefreshListener;
 
 public class HomePageActiveActivity extends Activity {
 	private NewsAdapter newsAdapter;
 	private static final Logger logger = LoggerFactory.getLogger(HomePageActiveActivity.class);
+	private String TypeId = null;
+	private List<TitleImgResult> _imgList;
 	RefreshableView listview;
 	
 	@Override
@@ -45,17 +48,19 @@ public class HomePageActiveActivity extends Activity {
 		// 取消状态栏，充满全屏
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		this.setContentView(R.layout.home_page_food);
-		listview = (RefreshableView) findViewById(R.id.foodlistview);
+		TypeId = this.getIntent().getStringExtra("typeid");
+		_imgList = (List<TitleImgResult>) this.getIntent().getSerializableExtra("imgList");
+		this.setContentView(R.layout.home_page_cultureactive);
+		listview = (RefreshableView) findViewById(R.id.activelistview);
 		new Thread(runnable).start();
 	}
 
 	private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-        	List<Map<String,Object>> _piclist= (List<Map<String, Object>>) msg.obj;
-        	if(_piclist!=null){
-        		newsAdapter = new NewsAdapter(HomePageActiveActivity.this,_piclist);
+        	List<Map<String, Object>> _list = (List<Map<String, Object>>) msg.obj;
+        	if(_list!=null){
+        		newsAdapter = new NewsAdapter(HomePageActiveActivity.this,_imgList,_list);
         		listview.setAdapter(newsAdapter);
         		listview.setonRefreshListener(new OnRefreshListener() {
     			public void onRefresh() {
@@ -100,17 +105,31 @@ public class HomePageActiveActivity extends Activity {
 				TProtocol protocol = new TBinaryProtocol(framedtransport);
 				DmService.Client client = new DmService.Client(protocol);
 				
-				Dm_PreImageList piclist= client.getPreImageList(SocketUtil.VALIDSTRING);
-				List<Dm_ActivitySimplify> oPicList = piclist.getPreImageList();
-				List<Map<String,Object>> picImgList = new ArrayList<Map<String,Object>>();
-				for(int i=0;i<oPicList.size();i++){
-					Map<String,Object> picMap = new HashMap<String,Object>();
-					Dm_ActivitySimplify oPic = (Dm_ActivitySimplify) oPicList.get(i);
-					picMap.put("titleImg", Picutil.returnBitMap(oPic.getPicture()));
-					picImgList.add(picMap);
+				Dm_ActivitySimplifyList activityList= client.searchActivitySimplifyByType(SocketUtil.VALIDSTRING,TypeId,1,5);
+				List<Dm_ActivitySimplify> _actiList = activityList.getActivitySimplifyList(); 
+				List<Map<String, Object>> _olist = new ArrayList<Map<String, Object>>();
+				
+				//头部位置占一个空的数据
+				Map<String,Object> _oomap = new HashMap<String,Object>();
+				_oomap.put("acid","");
+				_oomap.put("acimg","");
+				_oomap.put("acname","");
+				_oomap.put("acdate","");
+				_olist.add(_oomap);
+				
+				for(int i=0;i<_actiList.size();i++){
+					Dm_ActivitySimplify _dmactivity = _actiList.get(i);
+					Map<String,Object> _actiMap = new HashMap<String,Object>();
+					_actiMap.put("acid", _dmactivity.getId());
+					_actiMap.put("acimg", Picutil.returnBitMap(_dmactivity.getPicture()));
+					_actiMap.put("acname", _dmactivity.getName());
+					_actiMap.put("acdate", _dmactivity.getDate());
+					_olist.add(_actiMap);
 				}
+				
+				
 				Message msg = handler.obtainMessage();
-				msg.obj = picImgList;
+				msg.obj = _olist;
 			    handler.sendMessage(msg);
 			} catch (TException e) {
 				// TODO Auto-generated catch block

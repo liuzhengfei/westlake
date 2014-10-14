@@ -33,17 +33,17 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class NewsAdapter extends BaseAdapter {
 	// 定义ViewPager适配器
 	private ViewPagerAdapter vpAdapter;
 	// 定义一个ArrayList来存放View
 	private ArrayList<View> views;
-	// 引导图片资源
-//	private static final int[] picImgList = { R.drawable.image_1, R.drawable.image_2,
-//			R.drawable.image_3, R.drawable.image_4 };
 	//头部图片资源
-	private List<Map<String,Object>> picImgList; 
+//	private List<Map<String,Object>> picImgList; 
+	private List<Map<String,Object>> _olist;
+	private List<TitleImgResult> picImgList;
 	
 	private ViewPager viewPager;
 	private Context mContext;
@@ -53,10 +53,11 @@ public class NewsAdapter extends BaseAdapter {
 	// 记录当前选中位置
 	private int currentIndex;
 
-	public NewsAdapter(Context context,List<Map<String,Object>> picImgList) {
+	public NewsAdapter(Context context,List<TitleImgResult> picImgList,List<Map<String,Object>> list) {
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		this.picImgList = picImgList;
+		this._olist = list;
 		views = new ArrayList<View>();
 		vpAdapter = new ViewPagerAdapter(views);
 	}
@@ -64,36 +65,16 @@ public class NewsAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 20;
+		return _olist.size();
 	}
-
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return null;
+		return position;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-
-		if (position == 0)
-			return 0;
-		else
-			return position - 1;
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		// TODO Auto-generated method stub
-		return position > 0 ? 0 : 1;
-
-	}
-
-	@Override
-	public int getViewTypeCount() {
-		// TODO Auto-generated method stub
-		return 2;
+		return position;
 	}
 
 	@Override
@@ -102,11 +83,19 @@ public class NewsAdapter extends BaseAdapter {
 		if (position == 0) {
 			return getTopView(convertView);
 		} else {
+			if(convertView==null){
+				convertView = LayoutInflater.from(mContext).inflate(
+						R.layout.list_item, null);
+			}
+			ImageView _imgView = (ImageView) convertView.findViewById(R.id.imageView_item);
+			TextView _text = (TextView) convertView.findViewById(R.id.textView_item);
+			TextView _date = (TextView) convertView.findViewById(R.id.dateView_item);
+			Bitmap _bitmap = (Bitmap) _olist.get(position).get("acimg");
+			_imgView.setImageBitmap(_bitmap);
+			_text.setText((String)_olist.get(position).get("acname"));
+			_date.setText((String)_olist.get(position).get("acdate"));
 
-			View view = LayoutInflater.from(mContext).inflate(
-					R.layout.list_item, null);
-
-			return view;
+			return convertView;
 
 		}
 	}
@@ -127,11 +116,10 @@ public class NewsAdapter extends BaseAdapter {
 			viewPager.setLayoutParams(layoutParams);
 
 			for (int i = 0; i < picImgList.size(); i++) {
-				Map<String,Object> m=(Map<String,Object>) picImgList.get(i);
 				ImageView image = new ImageView(mContext);
 				image.setBackgroundColor(Color.WHITE);
 				image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				image.setImageBitmap((Bitmap) m.get("titleImg"));
+				image.setImageBitmap(picImgList.get(i).getBitmap());
 				views.add(image);
 			}
 

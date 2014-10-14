@@ -1,25 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:background="@color/listbg"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:background="@color/black" >
+    android:orientation="horizontal" >
 
     <ImageView
         android:id="@+id/imageView_item"
-        android:layout_width="60dp"
+        android:layout_width="120dp"
         android:layout_height="60dp"
-        android:layout_marginLeft="5dp"
-        android:src="@drawable/homepage_d" />
+        android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/textView_item"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:textColor="#FFFFFF"
-        android:text="测试数据"
-        />
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView_item"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            android:textColor="#ff000000" />
+        <TextView  
+		    android:id="@+id/dateView_item"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:singleLine="true"
+		    android:textColor="#ff464646"
+		    android:layout_gravity="center_vertical"
+		    android:paddingLeft="10dp"
+		    android:paddingBottom="10dp"
+		    android:gravity="center_vertical" />
+    </LinearLayout>
 
 </LinearLayout>

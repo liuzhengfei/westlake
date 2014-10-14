@@ -19,6 +19,7 @@
     <color name="azure">#F0FFFF</color>
     <color name="selected">#E77D29</color>
     <color name="disselected">#010101</color>
+    <color name="listbg">#FFFFFF</color>
     
 
 </resources>

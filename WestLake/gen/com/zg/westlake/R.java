@@ -15,6 +15,7 @@ public final class R {
         public static final int black=0x7f060000;
         public static final int disselected=0x7f060004;
         public static final int gold=0x7f060001;
+        public static final int listbg=0x7f060005;
         public static final int selected=0x7f060003;
     }
     public static final class dimen {
@@ -61,32 +62,37 @@ public final class R {
         public static final int wiki_u=0x7f02001f;
     }
     public static final class id {
-        public static final int foodlistview=0x7f08000b;
-        public static final int head_arrowImageView=0x7f080016;
-        public static final int head_contentLayout=0x7f080015;
-        public static final int head_lastUpdatedTextView=0x7f080019;
-        public static final int head_progressBar=0x7f080017;
-        public static final int head_tipsTextView=0x7f080018;
+        public static final int activelistview=0x7f08000a;
+        public static final int dateView_item=0x7f080018;
+        public static final int exhibitionlistview=0x7f08000b;
+        public static final int foodlistview=0x7f08000c;
+        public static final int head_arrowImageView=0x7f08001b;
+        public static final int head_contentLayout=0x7f08001a;
+        public static final int head_lastUpdatedTextView=0x7f08001e;
+        public static final int head_progressBar=0x7f08001c;
+        public static final int head_tipsTextView=0x7f08001d;
         public static final int home_page=0x7f080002;
         public static final int horizontalscrollview=0x7f080007;
-        public static final int imageView_item=0x7f080012;
-        public static final int imagelinearLayout=0x7f08000d;
-        public static final int imageviewpager=0x7f08000c;
+        public static final int imageView_item=0x7f080016;
+        public static final int imagelinearLayout=0x7f08000e;
+        public static final int imageviewpager=0x7f08000d;
         public static final int knows_page=0x7f080005;
         public static final int linearlayout=0x7f080008;
         public static final int main_radio=0x7f080001;
         public static final int more_page=0x7f080006;
-        public static final int photoAndVideo=0x7f080010;
-        public static final int pulllistview=0x7f080014;
+        public static final int photoAndVideo=0x7f080013;
+        public static final int pulllistview=0x7f080019;
         public static final int search_page=0x7f080003;
+        public static final int showlistview=0x7f08000f;
         public static final int sites_page=0x7f080004;
         public static final int tabhost=0x7f080000;
-        public static final int textView=0x7f08000a;
-        public static final int textView_item=0x7f080013;
-        public static final int title_bt_left=0x7f08000f;
-        public static final int title_home_page=0x7f08000e;
-        public static final int title_viewpager=0x7f080011;
+        public static final int textView=0x7f080011;
+        public static final int textView_item=0x7f080017;
+        public static final int title_bt_left=0x7f080012;
+        public static final int title_home_page=0x7f080010;
+        public static final int title_viewpager=0x7f080014;
         public static final int viewpager=0x7f080009;
+        public static final int westlakelistview=0x7f080015;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
