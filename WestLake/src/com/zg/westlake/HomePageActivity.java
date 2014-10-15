@@ -10,7 +10,9 @@ import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 
 import android.app.ActivityGroup;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,7 +46,6 @@ import com.zg.westlake.homepage.ui.HomePageWestLakeActivity;
 public class HomePageActivity extends ActivityGroup implements OnClickListener {
 
 	private ViewPager viewPager;
-	// private String titleArray[] = { "文化活动", "美食活动", "演出活动", "文化会展", "西湖寻梅" };
 	private String[] titleArray;
 	private String[] idArray;
 	private LinearLayout linearLayout;
@@ -57,6 +58,8 @@ public class HomePageActivity extends ActivityGroup implements OnClickListener {
 	private Intent showIntent;
 	private Intent cultureexhibitionIntent;
 	private Intent westlakeIntent;
+	
+	private ProgressDialog progressDialog = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,10 @@ public class HomePageActivity extends ActivityGroup implements OnClickListener {
 		horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalscrollview);
 
 		new Thread(runnable).start();
-
+		
+		progressDialog = new ProgressDialog(this);
+    	progressDialog.setMessage("正在努力加载中");  //正在加载
+    	progressDialog.show();
 	}
 
 	private Handler handler = new Handler() {
@@ -83,6 +89,11 @@ public class HomePageActivity extends ActivityGroup implements OnClickListener {
 			List<List<Object>> _oResult = (List<List<Object>>) msg.obj;
 			List<Object> _oTypeList =_oResult.get(0);
 			picImgList =_oResult.get(1);
+	    	
+	    	if(picImgList!=null){
+	    		progressDialog.dismiss();
+	    	}
+			
 			if (_oTypeList != null) {
 				titleArray = new String[_oTypeList.size()];
 				idArray = new String[_oTypeList.size()];
@@ -162,7 +173,6 @@ public class HomePageActivity extends ActivityGroup implements OnClickListener {
 				DmService.Client client = new DmService.Client(protocol);
 
 				Dm_ActivityTypeList activeTypeList = client.activityType(SocketUtil.VALIDSTRING);
-//				List<Dm_ActivityType> oTypeList = activeTypeList.getActivityTypeList();
 				List oTypeList = activeTypeList.getActivityTypeList();
 				
 				
@@ -237,16 +247,18 @@ public class HomePageActivity extends ActivityGroup implements OnClickListener {
 	// 初始化文本
 	void initTextView() {
 		textViews = new ArrayList<TextView>();
-		int width = 90;
-		int height = 60;
+		int _width = this.getWindowManager().getDefaultDisplay().getWidth();
+		
 		for (int i = 0; i < titleArray.length; i++) {
 			TextView textView = new TextView(this);
 			textView.setText(titleArray[i]);
-			textView.setTextSize(14);
-			textView.setWidth(width);
-			textView.setHeight(height - 30);
+			textView.setTextSize(18);
+			textView.setWidth(_width/7*2);
+			textView.setHeight(_width/8);
 			textView.setGravity(Gravity.CENTER);
-			textView.setBackgroundResource(R.drawable.home_page_title_shu);
+			Drawable d = getResources().getDrawable(R.drawable.home_page_title_shu);
+			d.setBounds(0, 0, 1, 30); //必须设置图片大小，否则不显示
+			textView.setCompoundDrawables(d , null, null, null);
 			textView.setId(i);
 
 			// 设置文本监听事件
@@ -255,7 +267,7 @@ public class HomePageActivity extends ActivityGroup implements OnClickListener {
 			LinearLayout.LayoutParams layoutParams = new LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			layoutParams.width = 1;
-			layoutParams.height = height - 40;
+			layoutParams.height = _width/8;
 			layoutParams.gravity = Gravity.CENTER;
 			// 添加子视图。如果没有布局参数对孩子已经设置,默认参数对于这个ViewGroup上设置的孩子。
 			linearLayout.addView(textView);

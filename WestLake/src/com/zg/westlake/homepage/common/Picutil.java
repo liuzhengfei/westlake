@@ -90,7 +90,10 @@ public class Picutil {
 		}
 		byte[] imageArray = baos.toByteArray();
 		
-		return BitmapFactory.decodeByteArray(imageArray, 0, imageArray.length);
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = false;
+		options.inSampleSize = 2;
+		return BitmapFactory.decodeByteArray(imageArray, 0, imageArray.length,options);
 
 	}
 }

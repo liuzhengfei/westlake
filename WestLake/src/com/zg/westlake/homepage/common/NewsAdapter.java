@@ -1,39 +1,27 @@
 package com.zg.westlake.homepage.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TFramedTransport;
-import org.apache.thrift.transport.TSocket;
-
-import com.dm.thrift.DmService;
-import com.dm.thrift.Dm_ActivitySimplify;
-import com.dm.thrift.Dm_PreImageList;
-import com.zg.socket.SocketUtil;
-import com.zg.westlake.R;
-
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Parcelable;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.zg.westlake.R;
 
 public class NewsAdapter extends BaseAdapter {
 	// 定义ViewPager适配器
@@ -92,6 +80,14 @@ public class NewsAdapter extends BaseAdapter {
 			TextView _date = (TextView) convertView.findViewById(R.id.dateView_item);
 			Bitmap _bitmap = (Bitmap) _olist.get(position).get("acimg");
 			_imgView.setImageBitmap(_bitmap);
+			
+			LayoutParams params;
+			params = _imgView.getLayoutParams();
+			params.height= ((Activity) mContext).getWindowManager().getDefaultDisplay().getWidth()/6;     
+			params.width =((Activity) mContext).getWindowManager().getDefaultDisplay().getWidth()/3;        
+			_imgView.setLayoutParams(params);
+			
+			
 			_text.setText((String)_olist.get(position).get("acname"));
 			_date.setText((String)_olist.get(position).get("acdate"));
 
@@ -105,9 +101,10 @@ public class NewsAdapter extends BaseAdapter {
 		if (topView == null) {
 			topView = LayoutInflater.from(mContext).inflate(
 					R.layout.home_page_title_viewpager, null);
-
+			int _height = ((Activity)mContext).getWindowManager().getDefaultDisplay().getHeight();
+			
 			FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-					LayoutParams.MATCH_PARENT, 240);
+					LayoutParams.MATCH_PARENT, _height/3);
 
 			layoutParams.gravity = Gravity.TOP;
 			// 页码指示点

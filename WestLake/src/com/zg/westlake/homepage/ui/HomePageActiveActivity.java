@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,12 +54,14 @@ public class HomePageActiveActivity extends Activity {
 		this.setContentView(R.layout.home_page_cultureactive);
 		listview = (RefreshableView) findViewById(R.id.activelistview);
 		new Thread(runnable).start();
+		
 	}
 
 	private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
         	List<Map<String, Object>> _list = (List<Map<String, Object>>) msg.obj;
+        	
         	if(_list!=null){
         		newsAdapter = new NewsAdapter(HomePageActiveActivity.this,_imgList,_list);
         		listview.setAdapter(newsAdapter);
@@ -75,8 +78,7 @@ public class HomePageActiveActivity extends Activity {
     							e.printStackTrace();
     						}
     
-    						// 增加一条数据到list中
-    						//data.addFirst("刷新后内容：每天都是新的一天！！！，親！要努力奋斗哦！！！");
+    						new Thread(runnable).start();
     
     						return null;
     					}
