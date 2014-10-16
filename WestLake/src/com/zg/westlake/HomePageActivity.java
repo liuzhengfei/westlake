@@ -89,10 +89,6 @@ public class HomePageActivity extends ActivityGroup implements OnClickListener {
 			List<List<Object>> _oResult = (List<List<Object>>) msg.obj;
 			List<Object> _oTypeList =_oResult.get(0);
 			picImgList =_oResult.get(1);
-	    	
-	    	if(picImgList!=null){
-	    		progressDialog.dismiss();
-	    	}
 			
 			if (_oTypeList != null) {
 				titleArray = new String[_oTypeList.size()];
@@ -157,6 +153,10 @@ public class HomePageActivity extends ActivityGroup implements OnClickListener {
 
 				}
 			});
+			
+			if(picImgList!=null){
+	    		progressDialog.dismiss();
+	    	}
 		}
 	};
 

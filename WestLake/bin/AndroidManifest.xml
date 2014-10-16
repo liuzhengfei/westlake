@@ -27,7 +27,7 @@
         <activity android:name="HomePageActivity" />
         <activity android:name="SearchPageActivity" />
         <activity android:name="SitesPageActivity" />
-        <activity android:name="KnowsPageActivity" />
+        <activity android:name="WikiPageActivity" />
         <activity android:name="MorePageActivity" />
         <activity android:name="com.zg.westlake.homepage.ui.HomePageActiveActivity" />
         <activity android:name="com.zg.westlake.homepage.ui.HomePageFoodActivity" />

@@ -60,11 +60,11 @@ public final class R {
         public static final int dateView_item=0x7f080018;
         public static final int exhibitionlistview=0x7f08000b;
         public static final int foodlistview=0x7f08000c;
-        public static final int head_arrowImageView=0x7f08001b;
-        public static final int head_contentLayout=0x7f08001a;
-        public static final int head_lastUpdatedTextView=0x7f08001e;
-        public static final int head_progressBar=0x7f08001c;
-        public static final int head_tipsTextView=0x7f08001d;
+        public static final int head_arrowImageView=0x7f08001a;
+        public static final int head_contentLayout=0x7f080019;
+        public static final int head_lastUpdatedTextView=0x7f08001d;
+        public static final int head_progressBar=0x7f08001b;
+        public static final int head_tipsTextView=0x7f08001c;
         public static final int home_page=0x7f080002;
         public static final int horizontalscrollview=0x7f080007;
         public static final int imageView_item=0x7f080016;
@@ -75,7 +75,6 @@ public final class R {
         public static final int main_radio=0x7f080001;
         public static final int more_page=0x7f080006;
         public static final int photoAndVideo=0x7f080013;
-        public static final int pulllistview=0x7f080019;
         public static final int search_page=0x7f080003;
         public static final int showlistview=0x7f08000f;
         public static final int sites_page=0x7f080004;
@@ -87,6 +86,8 @@ public final class R {
         public static final int title_viewpager=0x7f080014;
         public static final int viewpager=0x7f080009;
         public static final int westlakelistview=0x7f080015;
+        public static final int wiki_gridview=0x7f08001e;
+        public static final int wiki_page_imageview=0x7f08001f;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -99,13 +100,13 @@ public final class R {
         public static final int home_page_title=0x7f030007;
         public static final int home_page_title_viewpager=0x7f030008;
         public static final int home_page_westlake=0x7f030009;
-        public static final int knows_page_activity=0x7f03000a;
-        public static final int list_item=0x7f03000b;
-        public static final int more_page_activity=0x7f03000c;
-        public static final int pull_refresh=0x7f03000d;
-        public static final int refresh=0x7f03000e;
-        public static final int search_page_activity=0x7f03000f;
-        public static final int sites_page_activity=0x7f030010;
+        public static final int list_item=0x7f03000a;
+        public static final int more_page_activity=0x7f03000b;
+        public static final int refresh=0x7f03000c;
+        public static final int search_page_activity=0x7f03000d;
+        public static final int sites_page_activity=0x7f03000e;
+        public static final int wiki_page_activity=0x7f03000f;
+        public static final int wiki_page_grid_item=0x7f030010;
     }
     public static final class string {
         public static final int active=0x7f050007;
@@ -114,12 +115,12 @@ public final class R {
         public static final int food=0x7f050008;
         public static final int hello_world=0x7f050001;
         public static final int honmepage=0x7f050002;
-        public static final int knows=0x7f050005;
         public static final int more=0x7f050006;
         public static final int search=0x7f050003;
         public static final int show=0x7f050009;
         public static final int sites=0x7f050004;
         public static final int westlake=0x7f05000b;
+        public static final int wiki=0x7f050005;
     }
     public static final class style {
         /** 

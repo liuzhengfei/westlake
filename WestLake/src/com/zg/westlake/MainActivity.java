@@ -14,11 +14,13 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements
 		OnCheckedChangeListener {
 	private TabHost mHost;
 	private RadioGroup radioderGroup;
+	private TextView textView;
 	LocalActivityManager localManager;
 
 	@SuppressWarnings("deprecation")
@@ -31,6 +33,7 @@ public class MainActivity extends Activity implements
 		setContentView(R.layout.activity_main);
 
 		mHost = (TabHost) findViewById(R.id.tabhost);
+		textView = (TextView) findViewById(R.id.textView);
 		localManager = new LocalActivityManager(MainActivity.this, false);
 		localManager.dispatchCreate(savedInstanceState);
 		mHost.setup(localManager);
@@ -42,7 +45,7 @@ public class MainActivity extends Activity implements
 		mHost.addTab(mHost.newTabSpec("THREE").setIndicator("THREE")
 				.setContent(new Intent(this, SitesPageActivity.class)));
 		mHost.addTab(mHost.newTabSpec("FOUR").setIndicator("FOUR")
-				.setContent(new Intent(this, KnowsPageActivity.class)));
+				.setContent(new Intent(this, WikiPageActivity.class)));
 		mHost.addTab(mHost.newTabSpec("FIVE").setIndicator("FIVE")
 				.setContent(new Intent(this, MorePageActivity.class)));
 
@@ -63,7 +66,7 @@ public class MainActivity extends Activity implements
 		menu.setShadowWidthRes(R.dimen.shadow_width);
 		menu.setShadowDrawable(R.drawable.shadow);
 		menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		menu.setBehindWidth(200);
+		menu.setBehindWidth(this.getWindowManager().getDefaultDisplay().getWidth()/2);
 		menu.setFadeDegree(0.35f);
 		menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 		menu.setMenu(R.layout.more_page_activity);
@@ -73,18 +76,23 @@ public class MainActivity extends Activity implements
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		switch (checkedId) {
 		case R.id.home_page:
+			textView.setText(R.string.honmepage);
 			mHost.setCurrentTabByTag("ONE");
 			break;
 		case R.id.search_page:
+			textView.setText(R.string.search);
 			mHost.setCurrentTabByTag("TWO");
 			break;
 		case R.id.sites_page:
+			textView.setText(R.string.sites);
 			mHost.setCurrentTabByTag("THREE");
 			break;
 		case R.id.knows_page:
+			textView.setText(R.string.wiki);
 			mHost.setCurrentTabByTag("FOUR");
 			break;
 		case R.id.more_page:
+			textView.setText(R.string.more);
 			mHost.setCurrentTabByTag("FIVE");
 			break;
 		}

@@ -70,7 +70,7 @@
                     android:layout_marginTop="2.0dip"
                     android:drawableTop="@drawable/knows_page_bg"
                     android:tag="knows_page"
-                    android:text="@string/knows"
+                    android:text="@string/wiki"
                     android:textColor="@drawable/radio_font_color" />
 
                 <RadioButton
