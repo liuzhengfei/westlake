@@ -28,32 +28,34 @@ public final class R {
         public static final int switch_logo_bottom_padding=0x7f040004;
     }
     public static final class drawable {
-        public static final int down=0x7f020000;
-        public static final int home_page_bg=0x7f020001;
-        public static final int home_page_title_shu=0x7f020002;
-        public static final int homepage_d=0x7f020003;
-        public static final int homepage_u=0x7f020004;
-        public static final int ic_launcher=0x7f020005;
-        public static final int knows_page_bg=0x7f020006;
-        public static final int menu_top=0x7f020007;
-        public static final int more_d=0x7f020008;
-        public static final int more_page_bg=0x7f020009;
-        public static final int more_u=0x7f02000a;
-        public static final int navigation_d=0x7f02000b;
-        public static final int navigation_u=0x7f02000c;
-        public static final int navigationbar=0x7f02000d;
-        public static final int point=0x7f02000e;
-        public static final int point_black=0x7f02000f;
-        public static final int point_white=0x7f020010;
-        public static final int radio_font_color=0x7f020011;
-        public static final int search_page_bg=0x7f020012;
-        public static final int shadow=0x7f020013;
-        public static final int sites_d=0x7f020014;
-        public static final int sites_page_bg=0x7f020015;
-        public static final int sites_u=0x7f020016;
-        public static final int tabbar_bg=0x7f020017;
-        public static final int wiki_d=0x7f020018;
-        public static final int wiki_u=0x7f020019;
+        public static final int back_d=0x7f020000;
+        public static final int back_u=0x7f020001;
+        public static final int down=0x7f020002;
+        public static final int home_page_bg=0x7f020003;
+        public static final int home_page_title_shu=0x7f020004;
+        public static final int homepage_d=0x7f020005;
+        public static final int homepage_u=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
+        public static final int knows_page_bg=0x7f020008;
+        public static final int menu_top=0x7f020009;
+        public static final int more_d=0x7f02000a;
+        public static final int more_page_bg=0x7f02000b;
+        public static final int more_u=0x7f02000c;
+        public static final int navigation_d=0x7f02000d;
+        public static final int navigation_u=0x7f02000e;
+        public static final int navigationbar=0x7f02000f;
+        public static final int point=0x7f020010;
+        public static final int point_black=0x7f020011;
+        public static final int point_white=0x7f020012;
+        public static final int radio_font_color=0x7f020013;
+        public static final int search_page_bg=0x7f020014;
+        public static final int shadow=0x7f020015;
+        public static final int sites_d=0x7f020016;
+        public static final int sites_page_bg=0x7f020017;
+        public static final int sites_u=0x7f020018;
+        public static final int tabbar_bg=0x7f020019;
+        public static final int wiki_d=0x7f02001a;
+        public static final int wiki_u=0x7f02001b;
     }
     public static final class id {
         public static final int activelistview=0x7f08000a;
@@ -84,6 +86,7 @@ public final class R {
         public static final int title_bt_left=0x7f080012;
         public static final int title_home_page=0x7f080010;
         public static final int title_viewpager=0x7f080014;
+        public static final int view_wordwrap=0x7f080020;
         public static final int viewpager=0x7f080009;
         public static final int westlakelistview=0x7f080015;
         public static final int wiki_gridview=0x7f08001e;
@@ -107,6 +110,7 @@ public final class R {
         public static final int sites_page_activity=0x7f03000e;
         public static final int wiki_page_activity=0x7f03000f;
         public static final int wiki_page_grid_item=0x7f030010;
+        public static final int wiki_short_list_page=0x7f030011;
     }
     public static final class string {
         public static final int active=0x7f050007;
@@ -121,6 +125,7 @@ public final class R {
         public static final int sites=0x7f050004;
         public static final int westlake=0x7f05000b;
         public static final int wiki=0x7f050005;
+        public static final int wikititle=0x7f05000c;
     }
     public static final class style {
         /** 

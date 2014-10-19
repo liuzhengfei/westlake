@@ -75,8 +75,7 @@ public class HomePageFoodActivity extends Activity {
     							e.printStackTrace();
     						}
     
-    						// 增加一条数据到list中
-    						//data.addFirst("刷新后内容：每天都是新的一天！！！，親！要努力奋斗哦！！！");
+    						new Thread(runnable).start();
     
     						return null;
     					}

@@ -21,6 +21,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.dm.thrift.DmService;
 import com.dm.thrift.Dm_ActivitySimplify;
@@ -39,6 +41,8 @@ public class HomePageActiveActivity extends Activity {
 	private String TypeId = null;
 	private List<TitleImgResult> _imgList;
 	RefreshableView listview;
+	private int _nowpage = 1;
+	private int _pagesize = 5;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class HomePageActiveActivity extends Activity {
 		_imgList = (List<TitleImgResult>) this.getIntent().getSerializableExtra("imgList");
 		this.setContentView(R.layout.home_page_cultureactive);
 		listview = (RefreshableView) findViewById(R.id.activelistview);
+		
 		new Thread(runnable).start();
 		
 	}
@@ -107,7 +112,8 @@ public class HomePageActiveActivity extends Activity {
 				TProtocol protocol = new TBinaryProtocol(framedtransport);
 				DmService.Client client = new DmService.Client(protocol);
 				
-				Dm_ActivitySimplifyList activityList= client.searchActivitySimplifyByType(SocketUtil.VALIDSTRING,TypeId,1,5);
+				Dm_ActivitySimplifyList activityList= client.searchActivitySimplifyByType(SocketUtil.VALIDSTRING,
+						TypeId,_nowpage,_pagesize);
 				List<Dm_ActivitySimplify> _actiList = activityList.getActivitySimplifyList(); 
 				List<Map<String, Object>> _olist = new ArrayList<Map<String, Object>>();
 				

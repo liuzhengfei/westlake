@@ -9,10 +9,13 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,9 +23,11 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -32,8 +37,10 @@ import com.dm.thrift.Dm_BaikeType;
 import com.dm.thrift.Dm_BaikeTypeList;
 import com.zg.socket.SocketUtil;
 import com.zg.westlake.homepage.common.Picutil;
+import com.zg.westlake.wikipage.ui.WikiShortListPageActivity;
 
 public class WikiPageActivity extends Activity {
+	private static final Logger logger = LoggerFactory.getLogger(WikiPageActivity.class);
 	private List<Map<String, Object>> _owikilist;
 	private ProgressDialog progressDialog;
 
@@ -57,6 +64,21 @@ public class WikiPageActivity extends Activity {
 			_owikilist = (List<Map<String, Object>>) msg.obj;
 			GridView gridView = (GridView) findViewById(R.id.wiki_gridview);
 			gridView.setAdapter(new WikiAdapter(WikiPageActivity.this,_owikilist));
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					Intent _intent = new Intent(WikiPageActivity.this, WikiShortListPageActivity.class);
+					WikiAdapter _wikiAdapter = (WikiAdapter) parent.getAdapter();
+					String _wikiid = (String) _wikiAdapter.owiki.get(position).get("wikiid");
+					String _wikiname = (String) _wikiAdapter.owiki.get(position).get("wikiname");
+					_intent.putExtra("_wikiid",_wikiid);
+					_intent.putExtra("_wikiname",_wikiname);
+					startActivity(_intent);
+					
+				}
+				
+			});
 			
 			if(_owikilist!=null){
 				progressDialog.dismiss();
