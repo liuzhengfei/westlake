@@ -14,13 +14,18 @@
     <string name="exhibition">文化会展</string>
     <string name="westlake">西湖寻梅</string>
     <string name="wikititle">非物质文化遗产</string>
+    <string name="wikisearch">搜一搜</string>
+    <string name="loadmore">加载更多...</string>
+    <string name="huodong">活动</string>
     
     <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
     <color name="gold">#FFD700</color>
     <color name="azure">#F0FFFF</color>
     <color name="selected">#E77D29</color>
     <color name="disselected">#010101</color>
     <color name="listbg">#FFFFFF</color>
+    <color name="wordwrapbg">#C6C7C6</color>
     
 
 </resources>

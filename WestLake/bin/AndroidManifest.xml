@@ -34,7 +34,9 @@
         <activity android:name="com.zg.westlake.homepage.ui.HomePageShowActivity" />
         <activity android:name="com.zg.westlake.homepage.ui.HomePageExhibitionActivity" />
         <activity android:name="com.zg.westlake.homepage.ui.HomePageWestLakeActivity" />
+        <activity android:name="com.zg.westlake.homepage.ui.HomePageActiveDetailActivity" />
         <activity android:name="com.zg.westlake.wikipage.ui.WikiShortListPageActivity" />
+        <activity android:name="com.zg.westlake.wikipage.ui.WikiShortShowPageActivity" />
     </application>
 
 </manifest>

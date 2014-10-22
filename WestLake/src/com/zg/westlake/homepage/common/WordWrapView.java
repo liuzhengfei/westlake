@@ -1,5 +1,8 @@
 package com.zg.westlake.homepage.common;
 
+import com.zg.westlake.R;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -24,6 +27,7 @@ public class WordWrapView extends ViewGroup {
 		super(context, attrs);
 	}
 
+	@SuppressLint("ResourceAsColor")
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		int childCount = getChildCount();
@@ -33,7 +37,7 @@ public class WordWrapView extends ViewGroup {
 		int rows = 1;
 		for (int i = 0; i < childCount; i++) {
 			View view = getChildAt(i);
-			view.setBackgroundColor(Color.GREEN);
+			view.setBackgroundColor(R.color.wordwrapbg);
 			int width = view.getMeasuredWidth();
 			int height = view.getMeasuredHeight();
 			x += width + TEXT_MARGIN;

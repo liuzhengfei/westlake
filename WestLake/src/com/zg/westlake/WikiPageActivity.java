@@ -49,9 +49,9 @@ public class WikiPageActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.setContentView(R.layout.wiki_page_activity);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		this.setContentView(R.layout.wiki_page_activity);
 		new Thread(runnable).start();
 		progressDialog = new ProgressDialog(this);
     	progressDialog.setMessage("正在努力加载中");  //正在加载
@@ -75,7 +75,6 @@ public class WikiPageActivity extends Activity {
 					_intent.putExtra("_wikiid",_wikiid);
 					_intent.putExtra("_wikiname",_wikiname);
 					startActivity(_intent);
-					
 				}
 				
 			});

@@ -1,39 +1,73 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
 
     <FrameLayout
-        android:id="@+id/title_home_page"
+        android:id="@+id/title_wiki_page"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/navigationbar" >
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/wikiTitle"
             android:layout_width="fill_parent"
             android:layout_height="45dip"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:text="@string/honmepage"
             android:textColor="@color/black"
             android:textSize="20sp" >
         </TextView>
 
         <Button
-            android:id="@+id/title_bt_left"
-            android:layout_width="24dip"
-            android:layout_height="24dip"
+            android:id="@+id/wikiLeft"
+            android:layout_width="12dip"
+            android:layout_height="20dip"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="12dip"
-            android:background="@drawable/menu_top" >
+            android:background="@drawable/back_d" >
         </Button>
+
+        <TextView
+            android:id="@+id/wikiText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:text="@string/wiki"
+            android:textColor="#FFB328"
+            android:textSize="20sp"
+            android:textStyle="normal" />
     </FrameLayout>
 
-    <com.zg.westlake.homepage.common.WordWrapView
-        android:id="@+id/view_wordwrap"
+    <EditText
+        android:id="@+id/wikisearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/title_wiki_page"
+        android:background="@drawable/wiki_search"
+        android:gravity="center_vertical"
+        android:hint="@string/wikisearch"
+        android:paddingLeft="35dp"
+        android:singleLine="true" >
+    </EditText>
+
+    <ScrollView
+        android:id="@+id/wikiscroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/wikisearch"
+        android:fadingEdge="none"
+        android:fillViewport="true"
+        android:scrollbars="none" >
+
+        <com.zg.westlake.homepage.common.WordWrapView
+            android:id="@+id/view_wordwrap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </ScrollView>
 
 </RelativeLayout>
