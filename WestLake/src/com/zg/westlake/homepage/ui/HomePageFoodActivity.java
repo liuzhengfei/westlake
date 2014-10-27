@@ -10,6 +10,8 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -47,6 +49,8 @@ import com.zg.westlake.pullrefresh.RefreshableView;
 import com.zg.westlake.pullrefresh.RefreshableView.OnRefreshListener;
 
 public class HomePageFoodActivity extends Activity {
+	private static final Logger logger = LoggerFactory
+			.getLogger(HomePageFoodActivity.class);
 	private String TypeId = null;
 	private List<TitleImgResult> _imgList;
 	RefreshableView listview;

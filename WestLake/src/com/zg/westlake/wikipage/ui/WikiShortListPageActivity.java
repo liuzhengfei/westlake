@@ -45,6 +45,7 @@ public class WikiShortListPageActivity extends Activity {
 	private Button _backBt;
 	private TextView _backTv;
 	private ScrollView scrollview;
+	private boolean _scrollload = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,27 +76,6 @@ public class WikiShortListPageActivity extends Activity {
 			}
 		});
 		scrollview = (ScrollView) findViewById(R.id.wikiscroll);
-		scrollview.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				switch(event.getAction()){
-				case MotionEvent.ACTION_DOWN:
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (v.getScrollY() <= 0) {//top
-						
-	                } else if (scrollview.getChildAt(0).getMeasuredHeight() <= v.getHeight() + v.getScrollY()) {//bottom
-	                	startPage += 1;
-	                	new Thread(runnable).start();
-	                }
-	                break;
-				default:
-					break;
-				}
-				return false;
-			}
-		});
-		
 		new Thread(runnable).start();
 		progressDialog = new ProgressDialog(this);
     	progressDialog.setMessage("正在努力加载中");  //正在加载
@@ -126,13 +106,43 @@ public class WikiShortListPageActivity extends Activity {
 				
 				wordWrapView.addView(textview);
 			}
-				
+			
+			scrollview.setOnTouchListener(new OnTouchListener() {
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					switch(event.getAction()){
+					case MotionEvent.ACTION_DOWN:
+						break;
+					case MotionEvent.ACTION_MOVE:
+						if (v.getScrollY() <= 0) {//top
+							
+		                } else if (scrollview.getChildAt(0).getMeasuredHeight() <= v.getHeight() + v.getScrollY()) {//bottom
+		                	handler.post(new Runnable() {
+								
+								@Override
+								public void run() {
+									if(_scrollload){
+										_scrollload = false;
+										startPage += 1;
+					                	new Thread(runnable).start();
+									}
+								}
+							});
+		                }
+		                break;
+					default:
+						break;
+					}
+					return false;
+				}
+			});
 		}
 	};
 
 	Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
+			_scrollload = true;
 			try {
 				TSocket socket = new TSocket(SocketUtil.SOCKETIP,
 						SocketUtil.PORT);

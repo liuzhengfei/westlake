@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/silding_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#EAE9E9" />
+
+    <RadioGroup
+        android:id="@+id/silding_radio"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/silding_home"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/silding_text_bg"
+            android:button="@null"
+            android:drawableLeft="@drawable/silding_home_pic"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="30dp"
+            android:text="@string/honmepage"
+            android:textColor="@drawable/silding_textcolor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:id="@+id/silding_map"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/silding_text_bg"
+            android:button="@null"
+            android:drawableLeft="@drawable/silding_map_pic"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="30dp"
+            android:text="@string/map"
+            android:textColor="@drawable/silding_textcolor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:id="@+id/silding_center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/silding_text_bg"
+            android:button="@null"
+            android:drawableLeft="@drawable/silding_center_pic"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="30dp"
+            android:text="@string/center"
+            android:textColor="@drawable/silding_textcolor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:id="@+id/silding_setting"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/silding_text_bg"
+            android:button="@null"
+            android:drawableLeft="@drawable/silding_setting_pic"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="30dp"
+            android:text="@string/setting"
+            android:textColor="@drawable/silding_textcolor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:layout_weight="1" />
+    </RadioGroup>
+
+</LinearLayout>

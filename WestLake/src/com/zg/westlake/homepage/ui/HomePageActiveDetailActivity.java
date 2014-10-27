@@ -16,7 +16,11 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,6 +43,8 @@ public class HomePageActiveDetailActivity extends Activity {
 	private TextView _activePrice;
 	private TextView _activeContent;
 	private ProgressDialog progressDialog;
+	private Button _backBt;
+	private TextView _backTv;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,6 +59,22 @@ public class HomePageActiveDetailActivity extends Activity {
 		_activePlace = (TextView) findViewById(R.id.active_place);
 		_activePrice = (TextView) findViewById(R.id.active_price);
 		_activeContent = (TextView) findViewById(R.id.active_content);
+		_backBt = (Button) findViewById(R.id.active_left);
+		_backTv = (TextView) findViewById(R.id.active_text);
+		_backBt.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				HomePageActiveDetailActivity.this.finish();
+			}
+		});
+		_backTv.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				HomePageActiveDetailActivity.this.finish();
+			}
+		});
+		
+		
 		new Thread(runnable).start();
 		progressDialog = new ProgressDialog(this);
     	progressDialog.setMessage("正在努力加载中");  //正在加载
@@ -68,23 +90,29 @@ public class HomePageActiveDetailActivity extends Activity {
 			_activeName.setText((CharSequence) _result.get("name"));
 			_activeDate.setText((CharSequence) _result.get("date"));
 			_activePic.setImageBitmap((Bitmap) _result.get("pic"));
+			int _height = HomePageActiveDetailActivity.this.getWindowManager().getDefaultDisplay().getHeight();
+			LayoutParams params;
+			params = _activePic.getLayoutParams();
+			params.height = _height/3;
+			_activePic.setLayoutParams(params);
+			
 			String eventtime = (String) _result.get("eventtime");
 			String eventplace = (String) _result.get("eventplace");
 			String eventprice = (String) _result.get("eventprice");
 			if(eventtime==null||"null".equals(eventtime)){
 				eventtime = "活动时间：暂无";
 			}else{
-				eventtime+= "活动时间：";
+				eventtime= "活动时间：" + eventtime;
 			}
 			if(eventplace==null||"null".equals(eventplace)){
 				eventplace = "活动地点：暂无";
 			}else{
-				eventplace+="活动地点：";
+				eventplace="活动地点：" + eventplace;
 			}
 			if(eventprice==null||"null".equals(eventprice)){
 				eventprice = "活动票价：暂无";
 			}else{
-				eventprice+="活动票价：";
+				eventprice+="活动票价："+ eventprice;
 			}
 			_activeEventTime.setText(eventtime);
 			_activeEventTime.setBackgroundResource(R.drawable.textview_border);

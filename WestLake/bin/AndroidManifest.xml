@@ -37,6 +37,9 @@
         <activity android:name="com.zg.westlake.homepage.ui.HomePageActiveDetailActivity" />
         <activity android:name="com.zg.westlake.wikipage.ui.WikiShortListPageActivity" />
         <activity android:name="com.zg.westlake.wikipage.ui.WikiShortShowPageActivity" />
+        <activity android:name="com.zg.westlake.silding.ui.SildingCenterPageActivity" />
+        <activity android:name="com.zg.westlake.silding.ui.SildingCenterLoginPageActivity" />
+        <activity android:name="com.zg.westlake.silding.ui.SildingCenterRegisterPageActivity" />
     </application>
 
 </manifest>

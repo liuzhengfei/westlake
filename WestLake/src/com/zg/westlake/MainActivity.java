@@ -1,27 +1,37 @@
 package com.zg.westlake;
 
-import com.slidingmenu.lib.SlidingMenu;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
 import android.app.LocalActivityManager;
-import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements
-		OnCheckedChangeListener {
+import com.slidingmenu.lib.SlidingMenu;
+import com.zg.westlake.silding.ui.SildingCenterLoginPageActivity;
+
+public class MainActivity extends Activity implements OnCheckedChangeListener{
+	private static final Logger logger = LoggerFactory
+			.getLogger(MainActivity.class);
 	private TabHost mHost;
 	private RadioGroup radioderGroup;
 	private TextView textView;
 	LocalActivityManager localManager;
+	private View _sildingView;
+	private RadioGroup sildingRadioGroup;
+	private TextView _sildingTitle;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -29,7 +39,7 @@ public class MainActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		// 取消标题栏
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+
 		setContentView(R.layout.activity_main);
 
 		mHost = (TabHost) findViewById(R.id.tabhost);
@@ -51,6 +61,21 @@ public class MainActivity extends Activity implements
 
 		radioderGroup = (RadioGroup) findViewById(R.id.main_radio);
 		radioderGroup.setOnCheckedChangeListener(this);
+
+		_sildingView = LayoutInflater.from(this).inflate(R.layout.silding_page,null);
+		sildingRadioGroup = (RadioGroup) _sildingView.findViewById(R.id.silding_radio);
+		((RadioButton)sildingRadioGroup.findViewById(R.id.silding_home)).setChecked(true);
+		int height = this.getWindowManager().getDefaultDisplay().getHeight()/10;
+		_sildingTitle = (TextView) _sildingView.findViewById(R.id.silding_title);
+		
+		LayoutParams params = sildingRadioGroup.getLayoutParams();
+		params.height = height*4;
+		sildingRadioGroup.setLayoutParams(params);
+		
+		LayoutParams titleparams = _sildingTitle.getLayoutParams();
+		titleparams.height = height;
+		_sildingTitle.setLayoutParams(titleparams);
+		sildingRadioGroup.setOnCheckedChangeListener(this);
 		
 		final SlidingMenu menu = new SlidingMenu(this);
 		Button button = (Button) super.findViewById(R.id.title_bt_left);
@@ -60,16 +85,17 @@ public class MainActivity extends Activity implements
 				menu.toggle();
 			}
 		});
-		
+
 		menu.setMode(SlidingMenu.LEFT);
 		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		menu.setShadowWidthRes(R.dimen.shadow_width);
 		menu.setShadowDrawable(R.drawable.shadow);
 		menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		menu.setBehindWidth(this.getWindowManager().getDefaultDisplay().getWidth()/2);
+		menu.setBehindWidth(this.getWindowManager().getDefaultDisplay()
+				.getWidth() / 2);
 		menu.setFadeDegree(0.35f);
 		menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-		menu.setMenu(R.layout.more_page_activity);
+		menu.setMenu(_sildingView);
 	}
 
 	@Override
@@ -95,6 +121,13 @@ public class MainActivity extends Activity implements
 			textView.setText(R.string.more);
 			mHost.setCurrentTabByTag("FIVE");
 			break;
+//		case R.id.silding_map:
+//		case R.id.silding_setting:	
+		case R.id.silding_center:
+			startActivity(new Intent(this, SildingCenterLoginPageActivity.class));
+			break;
+		
 		}
 	}
+
 }
