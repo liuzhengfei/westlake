@@ -242,6 +242,7 @@ public class HomePageActiveActivity extends Activity {
 
 				// 头部位置占一个空的数据
 				Map<String, Object> _oomap = new HashMap<String, Object>();
+				if(_actiList!=null){
 				for (int i = 0; i < _actiList.size(); i++) {
 					Dm_ActivitySimplify _dmactivity = _actiList.get(i);
 					Map<String, Object> _actiMap = new HashMap<String, Object>();
@@ -252,7 +253,7 @@ public class HomePageActiveActivity extends Activity {
 					_actiMap.put("acdate", _dmactivity.getDate());
 					_olist.add(_actiMap);
 				}
-
+				}
 				Message msg = handler.obtainMessage();
 				msg.obj = _olist;
 				handler.sendMessage(msg);

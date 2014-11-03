@@ -1,26 +1,41 @@
 package com.zg.westlake.silding.ui;
 
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TFramedTransport;
+import org.apache.thrift.transport.TSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 
+import com.dm.thrift.DmService;
+import com.dm.thrift.Dm_User;
+import com.dm.thrift.Dm_User_Result;
 import com.slidingmenu.lib.SlidingMenu;
+import com.zg.socket.SocketUtil;
 import com.zg.westlake.MainActivity;
 import com.zg.westlake.R;
+import com.zg.westlake.util.CommonUtil;
 
 public class SildingCenterLoginPageActivity extends Activity implements OnCheckedChangeListener{
 	private static final Logger logger = LoggerFactory
@@ -50,19 +65,36 @@ public class SildingCenterLoginPageActivity extends Activity implements OnChecke
 		
 		setSildingMenu();
 		_registerbt.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(SildingCenterLoginPageActivity.this, SildingCenterRegisterPageActivity.class));
 			}
 		});
-
+		
+		_loginbt.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String username = _username.getText().toString();
+				String password = _password.getText().toString();
+				if(username==null||"".equals(username)){
+					showDialogMsg("用户名或者密码错误");
+				}else if(password==null||"".equals(password)){
+					showDialogMsg("用户名或者密码错误");
+				}else{
+					new Thread(runnable).start();
+				}
+			}
+		});
 	}
 
 	private void adjustHeight(View view) {
-		int _height = this.getWindowManager().getDefaultDisplay().getHeight() / 10;
+		int _height = this.getWindowManager().getDefaultDisplay().getHeight() / 12;
+		int _width = this.getWindowManager().getDefaultDisplay().getWidth()*2/5;
 		LayoutParams titleparams = view.getLayoutParams();
 		titleparams.height = _height;
+		if(view instanceof Button){
+			titleparams.width = _width;
+		}
 		view.setLayoutParams(titleparams);
 	}
 
@@ -75,6 +107,63 @@ public class SildingCenterLoginPageActivity extends Activity implements OnChecke
 		
 		}
 	}
+	
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Dm_User_Result _returnResult = (Dm_User_Result) msg.obj; 
+			String _resultMsg = _returnResult.message;
+			boolean _resultSucc = _returnResult.isSucess;
+			if(_resultSucc){
+				Dm_User _returnUser = _returnResult.getUser();
+				SharedPreferences userInfo = getSharedPreferences("_userloginMsg", Context.MODE_PRIVATE);
+		        userInfo.edit().putString("_userid", _returnUser.getId()).commit();
+				Intent intent = new Intent(SildingCenterLoginPageActivity.this,SildingCenterPageActivity.class);
+				SildingCenterLoginPageActivity.this.startActivity(intent);
+				
+			}else{
+				showDialogMsg(_resultMsg);
+			}
+		}
+	};
+	
+	
+	Runnable runnable = new Runnable() {
+		@Override
+		public void run() {
+			String username = _username.getText().toString();
+			String password = _password.getText().toString();
+			TSocket socket = null;
+			try {
+				socket = new TSocket(SocketUtil.SOCKETIP, SocketUtil.PORT);
+				socket.open();
+				TFramedTransport framedtransport = new TFramedTransport(socket);
+				TProtocol protocol = new TBinaryProtocol(framedtransport);
+				DmService.Client client = new DmService.Client(protocol);
+				Dm_User_Result _result = client.login(username, CommonUtil.stringToMD5(password));
+				
+				Message msg = handler.obtainMessage();
+				msg.obj = _result;
+				handler.sendMessage(msg);
+			} catch (TException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				if (socket != null) {
+					socket.close();
+				}
+			}
+		}
+	};
+	
+	private void showDialogMsg(String str){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(str);
+		builder.setPositiveButton("好", null);
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+	
 	
 	private void setSildingMenu(){
 		_sildingView = LayoutInflater.from(SildingCenterLoginPageActivity.this).inflate(R.layout.silding_page,null);

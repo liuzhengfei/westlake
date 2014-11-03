@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
 import android.app.LocalActivityManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import com.slidingmenu.lib.SlidingMenu;
 import com.zg.westlake.silding.ui.SildingCenterLoginPageActivity;
+import com.zg.westlake.silding.ui.SildingCenterPageActivity;
 
 public class MainActivity extends Activity implements OnCheckedChangeListener{
 	private static final Logger logger = LoggerFactory
@@ -124,7 +127,13 @@ public class MainActivity extends Activity implements OnCheckedChangeListener{
 //		case R.id.silding_map:
 //		case R.id.silding_setting:	
 		case R.id.silding_center:
-			startActivity(new Intent(this, SildingCenterLoginPageActivity.class));
+			SharedPreferences userInfo = getSharedPreferences("_userloginMsg", Context.MODE_PRIVATE);
+		   	String _userid = userInfo.getString("_userid", "");
+		   	if(_userid!=null&&!"".equals(_userid)){
+		   		startActivity(new Intent(this, SildingCenterPageActivity.class));
+		   	}else{
+		   		startActivity(new Intent(this, SildingCenterLoginPageActivity.class));
+		   	}
 			break;
 		
 		}

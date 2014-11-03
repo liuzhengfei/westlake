@@ -10,29 +10,24 @@ import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.dm.thrift.DmService;
 import com.dm.thrift.Dm_User;
 import com.dm.thrift.Dm_User_Result;
-import com.slidingmenu.lib.SlidingMenu;
 import com.zg.socket.SocketUtil;
-import com.zg.westlake.MainActivity;
 import com.zg.westlake.R;
 
 public class SildingCenterRegisterPageActivity extends Activity {
@@ -95,8 +90,12 @@ public class SildingCenterRegisterPageActivity extends Activity {
 	}
 
 	private void adjustHeight(View view) {
-		int _height = this.getWindowManager().getDefaultDisplay().getHeight() / 10;
+		int _height = this.getWindowManager().getDefaultDisplay().getHeight() / 12;
+		int _width = this.getWindowManager().getDefaultDisplay().getWidth()*2/5;
 		LayoutParams titleparams = view.getLayoutParams();
+		if(view instanceof Button){
+			titleparams.width = _width;
+		}
 		titleparams.height = _height;
 		view.setLayoutParams(titleparams);
 	}
@@ -129,6 +128,30 @@ public class SildingCenterRegisterPageActivity extends Activity {
 		dialog.show();
 	}
 	
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Dm_User_Result _returnResult = (Dm_User_Result) msg.obj; 
+			String _resultMsg = _returnResult.message;
+			boolean _resultSucc = _returnResult.isSucess;
+			if(_resultSucc){
+		        AlertDialog _artDialog = new AlertDialog.Builder(SildingCenterRegisterPageActivity.this)
+		        .setMessage(_resultMsg).setPositiveButton("好", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent intent = new Intent(SildingCenterRegisterPageActivity.this,SildingCenterLoginPageActivity.class);
+						SildingCenterRegisterPageActivity.this.startActivity(intent);
+					}
+				}).create();
+		        _artDialog.show();
+				
+			}else{
+				showDialogMsg(_resultMsg);
+			}
+		}
+	};
+	
+	
 	Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
@@ -148,6 +171,9 @@ public class SildingCenterRegisterPageActivity extends Activity {
 				dm_user.setPassword(password);
 				Dm_User_Result _result = client.regesiter(dm_user);
 				
+				Message msg = handler.obtainMessage();
+				msg.obj = _result;
+				handler.sendMessage(msg);
 			} catch (TException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

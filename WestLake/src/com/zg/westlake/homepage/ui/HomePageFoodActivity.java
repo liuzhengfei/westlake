@@ -246,16 +246,19 @@ public class HomePageFoodActivity extends Activity {
 
 				// 头部位置占一个空的数据
 				Map<String, Object> _oomap = new HashMap<String, Object>();
-				for (int i = 0; i < _actiList.size(); i++) {
-					Dm_ActivitySimplify _dmactivity = _actiList.get(i);
-					Map<String, Object> _actiMap = new HashMap<String, Object>();
-					_actiMap.put("acid", _dmactivity.getId());
-					_actiMap.put("acimg",
-							Picutil.returnBitMap(_dmactivity.getPicture()));
-					_actiMap.put("acname", _dmactivity.getName());
-					_actiMap.put("acdate", _dmactivity.getDate());
-					_olist.add(_actiMap);
+				if(_actiList!=null){
+					for (int i = 0; i < _actiList.size(); i++) {
+						Dm_ActivitySimplify _dmactivity = _actiList.get(i);
+						Map<String, Object> _actiMap = new HashMap<String, Object>();
+						_actiMap.put("acid", _dmactivity.getId());
+						_actiMap.put("acimg",
+								Picutil.returnBitMap(_dmactivity.getPicture()));
+						_actiMap.put("acname", _dmactivity.getName());
+						_actiMap.put("acdate", _dmactivity.getDate());
+						_olist.add(_actiMap);
+					}
 				}
+				
 
 				Message msg = handler.obtainMessage();
 				msg.obj = _olist;
