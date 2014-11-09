@@ -26,18 +26,17 @@ public class SildingCenterScreenImgActivity extends Activity {
 		setContentView(R.layout.silding_center_page_screenimg);
 
 		String keyname = getIntent().getStringExtra("large_img");
-		logger.debug("=========kao=>" + keyname);
 		Bitmap _bitmap = (Bitmap) CommonUtil._cacheMap.get(keyname);
-		
+
 		_largeImg = (ImageView) findViewById(R.id.large_image);
 		_largeImg.setImageBitmap(_bitmap);
-		
+
 		_largeImg.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				SildingCenterScreenImgActivity .this.finish();
+				SildingCenterScreenImgActivity.this.finish();
 			}
 		});
-		
+
 	}
 }

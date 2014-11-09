@@ -3,17 +3,15 @@ package com.zg.westlake.homepage.common;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.zg.westlake.homepage.ui.HomePageActiveActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,7 +41,7 @@ public class Picutil {
 		// }
 		// return pic;
 
-		final DefaultHttpClient client = new DefaultHttpClient();
+		final HttpClient client = new DefaultHttpClient();
 		final HttpGet getRequest = new HttpGet(url);
 		InputStream is = null;
 		ByteArrayOutputStream baos = null;

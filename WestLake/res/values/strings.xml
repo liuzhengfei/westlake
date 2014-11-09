@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<item type="id" name="tag_pl_fatherid"></item>
+	<item type="id" name="tag_pl_suibiid"></item>
+	<item type="id" name="tag_pl_username"></item>
+    
     <string name="app_name">WestLake</string>
     <string name="hello_world">Hello world!</string>
     <string name="honmepage">首页</string>
@@ -37,10 +40,23 @@
     <string name="cancel">取消</string>
     <string name="other">使用其他账号登陆</string>
     <string name="story">故事</string>
+    <string name="storycontent">故事正文</string>
     <string name="essay">随笔</string>
     <string name="transmit">转发</string>
     <string name="comment">评论</string>
+    <string name="response">回复</string>
+    <string name="send">发送</string>
+    <string name="saysomething">说几句吧...</string>
+    <string name="addtag">在这里添加标签</string>
     <string name="shu">|</string>
+    <string name="p2refresh_head_load_more">加载更多</string>
+    <string name="p2refresh_end_load_more">更    多</string>
+    <string name="p2refresh_end_click_load_more">点击加载</string>
+    <string name="p2refresh_release_refresh">松开刷新</string>
+    <string name="p2refresh_pull_to_refresh">下拉刷新</string>
+    <string name="p2refresh_doing_head_refresh">正在刷新&#8230;</string>
+    <string name="p2refresh_doing_end_refresh">加载中&#8230;</string>
+    <string name="p2refresh_refresh_lasttime">最近更新&#160;&#058;&#160;</string>
 
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
@@ -51,7 +67,9 @@
     <color name="listbg">#FFFFFF</color>
     <color name="wordwrapbg">#C6C7C6</color>
     <color name="gray">#D8D8D8</color>
+    <color name="deepgray">#606060</color>
     <color name="red">#FC4343</color>
     <color name="blue">#0080FF</color>
+    <color name="transparent">#00000000</color>
 
 </resources>

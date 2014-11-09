@@ -95,7 +95,7 @@
             android:layout_weight="0"
             android:gravity="center"
             android:text="@string/shu"
-            android:textColor="@color/gray"
+            android:textColor="@color/deepgray"
             android:textSize="16sp" />
 
         <TextView
