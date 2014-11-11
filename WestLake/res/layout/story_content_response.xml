@@ -40,7 +40,7 @@
             android:gravity="center"
             android:layout_gravity="right|center_vertical"
             android:text="@string/send"
-            android:textColor="@color/selected"
+            android:textColor="@color/gray"
             android:textSize="20sp"
             android:textStyle="normal" />
     </FrameLayout>

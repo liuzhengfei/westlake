@@ -47,6 +47,8 @@
         <activity android:name="com.zg.westlake.silding.ui.SildingCenterStoryComment" />
         <activity android:name="com.zg.westlake.silding.ui.SildingCenterStoryTrans" />
         <activity android:name="com.zg.westlake.silding.ui.SildingCenterStoryRepl" />
+        <activity android:name="com.zg.westlake.silding.ui.SildingCenterWriteEssayPageActivity" />
+        <activity android:name="com.zg.westlake.silding.ui.SildingCenterEssayDetail" />
     </application>
 
 </manifest>

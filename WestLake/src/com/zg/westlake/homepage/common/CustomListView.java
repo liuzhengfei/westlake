@@ -230,8 +230,7 @@ public class CustomListView extends ListView implements OnScrollListener {
 	private void addFooterView() {
 		mEndRootView = mInflater.inflate(R.layout.listfooter_more, null);
 		mEndRootView.setVisibility(View.VISIBLE);
-		mEndLoadProgressBar = (ProgressBar) mEndRootView
-				.findViewById(R.id.pull_to_refresh_progress);
+		mEndLoadProgressBar = (ProgressBar) mEndRootView.findViewById(R.id.pull_to_refresh_progress);
 		mEndLoadTipsTextView = (TextView) mEndRootView.findViewById(R.id.load_more);
 		mEndRootView.setOnClickListener(new View.OnClickListener() {
 
@@ -278,36 +277,6 @@ public class CustomListView extends ListView implements OnScrollListener {
 		}else{
 			_Duration = 250;
 		}
-//		Interpolator _Interpolator;
-//		switch (pAnimType) {
-//		case 0:
-//			_Interpolator = new AccelerateDecelerateInterpolator();
-//			break;
-//		case 1:
-//			_Interpolator = new AccelerateInterpolator();
-//			break;
-//		case 2:
-//			_Interpolator = new AnticipateInterpolator();
-//			break;
-//		case 3:
-//			_Interpolator = new AnticipateOvershootInterpolator();
-//			break;
-//		case 4:
-//			_Interpolator = new BounceInterpolator();
-//			break;
-//		case 5:
-//			_Interpolator = new CycleInterpolator(1f);
-//			break;
-//		case 6:
-//			_Interpolator = new DecelerateInterpolator();
-//			break;
-//		case 7:
-//			_Interpolator = new OvershootInterpolator();
-//			break;
-//		default:
-//			_Interpolator = new LinearInterpolator();
-//			break;
-//		}
 		
 		Interpolator _Interpolator = new LinearInterpolator();
 		
@@ -617,10 +586,6 @@ public class CustomListView extends ListView implements OnScrollListener {
 		case REFRESHING:
 			mHeadView.setPadding(0, 0, 0, 0);
 			
-			// 华生的建议： 实际上这个的setPadding可以用动画来代替。我没有试，但是我见过。其实有的人也用Scroller可以实现这个效果，
-			// 我没时间研究了，后期再扩展，这个工作交给小伙伴你们啦~ 如果改进了记得发到我邮箱噢~
-			// 本人邮箱： xxzhaofeng5412@gmail.com
-			
 			mProgressBar.setVisibility(View.VISIBLE);
 			mArrowImageView.clearAnimation();
 			mArrowImageView.setVisibility(View.GONE);
@@ -675,7 +640,7 @@ public class CustomListView extends ListView implements OnScrollListener {
 	public void setOnLoadListener(OnLoadMoreListener pLoadMoreListener) {
 		if(pLoadMoreListener != null){
 			mLoadMoreListener = pLoadMoreListener;
-			mCanLoadMore = true;
+			//mCanLoadMore = true;
 			if(mCanLoadMore && getFooterViewsCount() == 0){
 				addFooterView();
 			}

@@ -1,6 +1,7 @@
 package com.zg.westlake.homepage.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +11,11 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,44 +23,40 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.dm.thrift.DmService;
 import com.dm.thrift.Dm_ActivitySimplify;
 import com.dm.thrift.Dm_ActivitySimplifyList;
 import com.zg.socket.SocketUtil;
 import com.zg.westlake.R;
-import com.zg.westlake.homepage.common.ListADAdapter;
+import com.zg.westlake.homepage.common.CustomListView;
+import com.zg.westlake.homepage.common.CustomListView.OnLoadMoreListener;
+import com.zg.westlake.homepage.common.CustomListView.OnRefreshListener;
 import com.zg.westlake.homepage.common.Picutil;
 import com.zg.westlake.homepage.common.TitleImgResult;
 import com.zg.westlake.homepage.common.ViewPagerAdapter;
-import com.zg.westlake.pullrefresh.RefreshableView;
-import com.zg.westlake.pullrefresh.RefreshableView.OnRefreshListener;
 
 public class HomePageFoodActivity extends Activity {
-	private static final Logger logger = LoggerFactory
-			.getLogger(HomePageFoodActivity.class);
+
 	private String TypeId = null;
 	private List<TitleImgResult> _imgList;
-	RefreshableView listview;
+	private CustomListView _mListView;
 	private int _nowpage = 1;
-	private int _pagesize = 3;
-	private List<Map<String, Object>> _resultList;
-	private View moreView;
-	private Button _loadBt;
-	private ProgressBar _loadPg;
+	private int _pagesize = 5;
+	private List<Map<String, Object>> _resultList = new ArrayList<Map<String, Object>>();
 	private View _topView;
 	private ViewPager viewPager;
 	private ArrayList<View> views;
@@ -68,10 +65,12 @@ public class HomePageFoodActivity extends Activity {
 	private ImageView[] points;
 	// 记录当前选中位置
 	private int currentIndex;
-	private ListADAdapter _listAdapter;
-	private boolean _refresh = false;
+	private ActiveListAdapter _listAdapter;
 
-	@SuppressWarnings("unchecked")
+	private static final int INIT_LISTVIEW = 1000;
+	private static final int REFRESH_DATA_FINISH = 1001;
+	private static final int LOAD_DATA_FINISH = 1002;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,200 +79,288 @@ public class HomePageFoodActivity extends Activity {
 		// 取消状态栏，充满全屏
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		TypeId = this.getIntent().getStringExtra("typeid");
-		_imgList = (List<TitleImgResult>) this.getIntent()
-				.getSerializableExtra("imgList");
-		this.setContentView(R.layout.home_page_food);
 
-		moreView = getLayoutInflater().inflate(R.layout.loadmore, null);
-
-		listview = (RefreshableView) findViewById(R.id.foodlistview);
-
-		// 设置头部图片浏览效果
-		if (_topView == null) {
-			_topView = getLayoutInflater().inflate(
-					R.layout.home_page_title_viewpager, null);
-			int _height = HomePageFoodActivity.this.getWindowManager()
-					.getDefaultDisplay().getHeight();
-			FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-					LayoutParams.MATCH_PARENT, _height / 3);
-			layoutParams.gravity = Gravity.TOP;
-			// 图片切换控件
-			viewPager = (ViewPager) _topView.findViewById(R.id.title_viewpager);
-			viewPager.setLayoutParams(layoutParams);
-			views = new ArrayList<View>();
-			for (int i = 0; i < _imgList.size(); i++) {
-				ImageView image = new ImageView(HomePageFoodActivity.this);
-				image.setBackgroundColor(Color.WHITE);
-				image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				image.setImageBitmap(_imgList.get(i).getBitmap());
-				views.add(image);
-			}
-			vpAdapter = new ViewPagerAdapter(views);
-			viewPager.setAdapter(vpAdapter);
-			// viewPager.setCurrentItem(0);
-			viewPager.setOnPageChangeListener(new OnPageChangeListener() {
-
-				@Override
-				public void onPageSelected(int position) {
-					setCurDot(position);
-				}
-
-				@Override
-				public void onPageScrolled(int arg0, float arg1, int arg2) {
-				}
-
-				@Override
-				public void onPageScrollStateChanged(int arg0) {
-				}
-			});
-
-			initPoint();
-		}
-
-		listview.addHeaderView(_topView);
-		listview.addFooterView(moreView);
-		_resultList = new ArrayList<Map<String, Object>>();
-		new Thread(runnable).start();
+		setContentView(R.layout.home_page_food);
+		initGetData();
+		initView();
+		initloadData();
 	}
 
-	Handler handler = new Handler() {
+	private void initView() {
+		_listAdapter = new ActiveListAdapter(HomePageFoodActivity.this,_resultList);
+
+		_mListView = (CustomListView) findViewById(R.id.foodlistview);
+		getTopView();
+		_mListView.addHeaderView(_topView);
+		_mListView.setAdapter(_listAdapter);
+		
+		_mListView.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				loadData(0);
+			}
+		});
+
+		_mListView.setOnLoadListener(new OnLoadMoreListener() {
+			@Override
+			public void onLoadMore() {// 加载更多
+				loadData(1);
+			}
+		});
+
+		_mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent mIntent = new
+						 Intent(HomePageFoodActivity.this,HomePageActiveDetailActivity.class);
+				 String acid = (String) _listAdapter.mList.get(position-2).get("acid");
+				 mIntent.putExtra("_acid", acid);
+				 startActivity(mIntent);
+			}
+		});
+	}
+
+	@SuppressWarnings("unchecked")
+	private void initGetData() {
+		TypeId = this.getIntent().getStringExtra("typeid");
+		_imgList = (List<TitleImgResult>) this.getIntent().getSerializableExtra("imgList");
+	}
+
+	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
-			List<Map<String, Object>> _ooresult = (List<Map<String, Object>>) msg.obj;
-			if (_ooresult != null) {
-				if (_refresh) {
-					_resultList = new ArrayList<Map<String, Object>>();
-					_refresh = false;
+			switch (msg.what) {
+			case INIT_LISTVIEW:
+				if(_listAdapter!=null){
+					_listAdapter.mList = (List<Map<String, Object>>) msg.obj;
+					changeLoadState();
+					_listAdapter.notifyDataSetChanged();
 				}
-				for (int j = 0; j < _ooresult.size(); j++) {
-					_resultList.add(_ooresult.get(j));
+				_mListView.onRefreshComplete();//初始化加载数据完成
+				break;
+			case REFRESH_DATA_FINISH:
+				if(_listAdapter!=null){
+					_listAdapter.mList = (List<Map<String, Object>>) msg.obj;
+					changeLoadState();
+					_listAdapter.notifyDataSetChanged();
 				}
-				_listAdapter = new ListADAdapter(HomePageFoodActivity.this,
-						_resultList);
+				_mListView.onRefreshComplete();//下拉刷新
+				break;
+			case LOAD_DATA_FINISH:
+				if(_listAdapter!=null){
+					_listAdapter.mList.addAll((Collection<Map<String, Object>>)msg.obj);
+					changeLoadState();
+					_listAdapter.notifyDataSetChanged();
+				}
+				_mListView.onLoadMoreComplete();	//加载更多完成
+				break;
+			default:
+				break;
 			}
-			listview.setAdapter(_listAdapter);
-
-			listview.setOnItemClickListener(new OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					Intent mIntent = new Intent(HomePageFoodActivity.this,
-							HomePageActiveDetailActivity.class);
-					HeaderViewListAdapter _hview = (HeaderViewListAdapter) parent
-							.getAdapter();
-					ListADAdapter listAdapter = (ListADAdapter) _hview
-							.getWrappedAdapter();
-					String acid = (String) listAdapter._olist.get(position - 2)
-							.get("acid");
-					mIntent.putExtra("_acid", acid);
-					startActivity(mIntent);
-				}
-
-			});
-
-			_loadBt = (Button) findViewById(R.id.bt_load);
-			_loadPg = (ProgressBar) findViewById(R.id.pg_load);
-			if (_resultList.size() > 0) {
-				if (_resultList.size() >= (_pagesize * _nowpage)) {
-					_loadBt.setVisibility(View.VISIBLE);
-					_loadPg.setVisibility(View.GONE);
-				} else {
-					_loadBt.setVisibility(View.GONE);
-					_loadPg.setVisibility(View.GONE);
-				}
-			} else {
-				_loadBt.setVisibility(View.GONE);
-				_loadPg.setVisibility(View.GONE);
-			}
-
-			_loadBt.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					_loadPg.setVisibility(View.VISIBLE);// 将进度条可见
-					_loadBt.setVisibility(View.GONE);// 按钮不可见
-
-					handler.postDelayed(new Runnable() {
-
-						@Override
-						public void run() {
-							_nowpage += 1;
-							new Thread(runnable).start();
-							_listAdapter.notifyDataSetChanged();
-							listview.onRefreshComplete();
-						}
-
-					}, 1000);
-				}
-			});
-
-			listview.setonRefreshListener(new OnRefreshListener() {
-				@Override
-				public void onRefresh() {
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							_refresh = true;
-							_nowpage = 1;
-							new Thread(runnable).start();
-							_listAdapter.notifyDataSetChanged();
-							listview.onRefreshComplete();
-						}
-					}, 1000);
-				}
-			});
-
 		}
 	};
 
-	// 调用获取图片接口
-	Runnable runnable = new Runnable() {
-		@Override
-		public void run() {
-			List<Map<String, Object>> _olist = new ArrayList<Map<String, Object>>();
-			TSocket socket = null;
-			try {
-				socket = new TSocket(SocketUtil.SOCKETIP, SocketUtil.PORT);
-				socket.open();
-				TFramedTransport framedtransport = new TFramedTransport(socket);
-				TProtocol protocol = new TBinaryProtocol(framedtransport);
-				DmService.Client client = new DmService.Client(protocol);
-				Dm_ActivitySimplifyList activityList = client
-						.searchActivitySimplifyByType(SocketUtil.VALIDSTRING,
-								TypeId, _nowpage, _pagesize);
-				List<Dm_ActivitySimplify> _actiList = activityList
-						.getActivitySimplifyList();
+	private void changeLoadState(){
+		if(_listAdapter.mList.size()>0){
+			if((_nowpage*_pagesize)<=_listAdapter.mList.size()){
+				
+				_mListView.setCanLoadMore(true);
+				_mListView.setAutoLoadMore(true);
+			}else{
+				_mListView.setCanLoadMore(false);
+				_mListView.setAutoLoadMore(false);
+			}
+		}else{
+			_mListView.setCanLoadMore(false);
+			_mListView.setAutoLoadMore(false);
+		}
+	}
+	
+	
+	private void getTopView() {
+		// 设置头部图片浏览效果
+		if (_topView == null) {
+			_topView = HomePageFoodActivity.this.getLayoutInflater().inflate(R.layout.home_page_title_viewpager, null);
+		}
+		int _height = HomePageFoodActivity.this.getWindowManager()
+				.getDefaultDisplay().getHeight();
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, _height / 3);
+		layoutParams.gravity = Gravity.TOP;
+		// 图片切换控件
+		viewPager = (ViewPager) _topView.findViewById(R.id.title_viewpager);
+		viewPager.setLayoutParams(layoutParams);
+		views = new ArrayList<View>();
+		for (int i = 0; i < _imgList.size(); i++) {
+			ImageView image = new ImageView(HomePageFoodActivity.this);
+			image.setBackgroundColor(Color.WHITE);
+			image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			image.setImageBitmap(_imgList.get(i).getBitmap());
+			views.add(image);
+		}
+		vpAdapter = new ViewPagerAdapter(views);
+		viewPager.setAdapter(vpAdapter);
+		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
-				// 头部位置占一个空的数据
-				Map<String, Object> _oomap = new HashMap<String, Object>();
-				if(_actiList!=null){
-					for (int i = 0; i < _actiList.size(); i++) {
-						Dm_ActivitySimplify _dmactivity = _actiList.get(i);
-						Map<String, Object> _actiMap = new HashMap<String, Object>();
-						_actiMap.put("acid", _dmactivity.getId());
-						_actiMap.put("acimg",
-								Picutil.returnBitMap(_dmactivity.getPicture()));
-						_actiMap.put("acname", _dmactivity.getName());
-						_actiMap.put("acdate", _dmactivity.getDate());
-						_olist.add(_actiMap);
+			@Override
+			public void onPageSelected(int position) {
+				setCurDot(position);
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+			}
+		});
+
+		initPoint();
+
+	}
+
+	public void loadData(final int type) {
+		new Thread() {
+			public void run() {
+				List<Map<String, Object>> _mList = null;
+				Map<String, Object> _oomap = null;
+				TSocket socket = null;
+				try {
+					socket = new TSocket(SocketUtil.SOCKETIP, SocketUtil.PORT);
+					socket.open();
+					TFramedTransport framedtransport = new TFramedTransport(
+							socket);
+					TProtocol protocol = new TBinaryProtocol(framedtransport);
+					DmService.Client client = new DmService.Client(protocol);
+
+					switch (type) {
+					case 0:
+						_nowpage = 1;
+						_mList = new ArrayList<Map<String, Object>>();
+						Dm_ActivitySimplifyList activityList = client
+								.searchActivitySimplifyByType(
+										SocketUtil.VALIDSTRING, TypeId,
+										_nowpage, _pagesize);
+						List<Dm_ActivitySimplify> _actiList = activityList
+								.getActivitySimplifyList();
+
+						_oomap = new HashMap<String, Object>();
+						if (_actiList != null) {
+							for (int i = 0; i < _actiList.size(); i++) {
+								Dm_ActivitySimplify _dmactivity = _actiList
+										.get(i);
+								Map<String, Object> _actiMap = new HashMap<String, Object>();
+								_actiMap.put("acid", _dmactivity.getId());
+								_actiMap.put("acimg", Picutil
+										.returnBitMap(_dmactivity.getPicture()));
+								_actiMap.put("acname", _dmactivity.getName());
+								_actiMap.put("acdate", _dmactivity.getDate());
+								_mList.add(_actiMap);
+							}
+						}
+						break;
+					case 1:
+						_nowpage += 1;
+						_mList = new ArrayList<Map<String, Object>>();
+						Dm_ActivitySimplifyList activityList_n = client
+								.searchActivitySimplifyByType(
+										SocketUtil.VALIDSTRING, TypeId,
+										_nowpage, _pagesize);
+						List<Dm_ActivitySimplify> _actiList_n = activityList_n
+								.getActivitySimplifyList();
+
+						_oomap = new HashMap<String, Object>();
+						if (_actiList_n != null) {
+							for (int i = 0; i < _actiList_n.size(); i++) {
+								Dm_ActivitySimplify _dmactivity = _actiList_n
+										.get(i);
+								Map<String, Object> _actiMap = new HashMap<String, Object>();
+								_actiMap.put("acid", _dmactivity.getId());
+								_actiMap.put("acimg", Picutil
+										.returnBitMap(_dmactivity.getPicture()));
+								_actiMap.put("acname", _dmactivity.getName());
+								_actiMap.put("acdate", _dmactivity.getDate());
+								_mList.add(_actiMap);
+							}
+						}
+						break;
+					}
+					Thread.sleep(2000);
+					if (type == 0) {
+						Message _Msg = handler.obtainMessage(
+								REFRESH_DATA_FINISH, _mList);
+						handler.sendMessage(_Msg);
+					} else if (type == 1) {
+						Message _Msg = handler.obtainMessage(LOAD_DATA_FINISH,
+								_mList);
+						handler.sendMessage(_Msg);
+					}
+
+				} catch (TException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} finally {
+					if (socket != null) {
+						socket.close();
 					}
 				}
-				
 
-				Message msg = handler.obtainMessage();
-				msg.obj = _olist;
-				handler.sendMessage(msg);
+			}
 
-			} catch (TException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				if (socket != null) {
-					socket.close();
+		}.start();
+	}
+
+	private void initloadData() {
+		new Thread() {
+			public void run() {
+				List<Map<String, Object>> _olist = new ArrayList<Map<String, Object>>();
+				TSocket socket = null;
+				try {
+					socket = new TSocket(SocketUtil.SOCKETIP, SocketUtil.PORT);
+					socket.open();
+					TFramedTransport framedtransport = new TFramedTransport(
+							socket);
+					TProtocol protocol = new TBinaryProtocol(framedtransport);
+					DmService.Client client = new DmService.Client(protocol);
+					Dm_ActivitySimplifyList activityList = client
+							.searchActivitySimplifyByType(
+									SocketUtil.VALIDSTRING, TypeId, _nowpage,
+									_pagesize);
+					List<Dm_ActivitySimplify> _actiList = activityList
+							.getActivitySimplifyList();
+
+					Map<String, Object> _oomap = new HashMap<String, Object>();
+					if (_actiList != null) {
+						for (int i = 0; i < _actiList.size(); i++) {
+							Dm_ActivitySimplify _dmactivity = _actiList.get(i);
+							Map<String, Object> _actiMap = new HashMap<String, Object>();
+							_actiMap.put("acid", _dmactivity.getId());
+							_actiMap.put("acimg", Picutil
+									.returnBitMap(_dmactivity.getPicture()));
+							_actiMap.put("acname", _dmactivity.getName());
+							_actiMap.put("acdate", _dmactivity.getDate());
+							_olist.add(_actiMap);
+						}
+					}
+					Message _Msg = handler.obtainMessage(INIT_LISTVIEW, _olist);
+					handler.sendMessage(_Msg);
+
+				} catch (TException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					if (socket != null) {
+						socket.close();
+					}
 				}
 			}
-		}
-	};
+		}.start();
+	}
 
 	// 初始化底部小点
 	private void initPoint() {
@@ -311,4 +398,67 @@ public class HomePageFoodActivity extends Activity {
 
 		currentIndex = positon;
 	}
+
+	private class ActiveListAdapter extends BaseAdapter {
+		private Context mContext;
+		public List<Map<String, Object>> mList;
+
+		public ActiveListAdapter(Context pContext,
+				List<Map<String, Object>> pList) {
+			mContext = pContext;
+			if (pList != null) {
+				mList = pList;
+			} else {
+				mList = new ArrayList<Map<String, Object>>();
+			}
+		}
+
+		@Override
+		public int getCount() {
+			return mList.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return mList.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				convertView = LayoutInflater.from(mContext).inflate(
+						R.layout.list_item, null);
+			}
+			ImageView _imgView = (ImageView) convertView
+					.findViewById(R.id.imageView_item);
+			TextView _text = (TextView) convertView
+					.findViewById(R.id.textView_item);
+			TextView _date = (TextView) convertView
+					.findViewById(R.id.dateView_item);
+			Bitmap _bitmap = (Bitmap) mList.get(position).get("acimg");
+			_imgView.setImageBitmap(_bitmap);
+
+			LayoutParams params;
+			params = _imgView.getLayoutParams();
+			params.height = ((Activity) mContext).getWindowManager()
+					.getDefaultDisplay().getWidth() / 4;
+			params.width = ((Activity) mContext).getWindowManager()
+					.getDefaultDisplay().getWidth() / 2;
+			_imgView.setLayoutParams(params);
+
+			_text.setText((String) mList.get(position).get("acname"));
+			_date.setText((String) mList.get(position).get("acdate"));
+
+			return convertView;
+		}
+
+	}
+	
+	
+
 }

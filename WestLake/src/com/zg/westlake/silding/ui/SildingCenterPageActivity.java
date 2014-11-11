@@ -33,6 +33,7 @@ public class SildingCenterPageActivity extends Activity implements OnCheckedChan
 	private TabHost mHost;
 	LocalActivityManager localManager;
 	private RadioGroup radioderGroup;
+	private Button _writeEssayBt;
 
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,22 @@ public class SildingCenterPageActivity extends Activity implements OnCheckedChan
 		// 取消标题栏
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.silding_center_page_activity);
-		
-		mHost = (TabHost) findViewById(R.id.center_page_tabhost);
-		_pageTextView = (TextView) findViewById(R.id.center_page_textview);
 		localManager = new LocalActivityManager(SildingCenterPageActivity.this, false);
 		localManager.dispatchCreate(savedInstanceState);
+		
+		initView();
+		
+		setSildingMenu();
+//		SharedPreferences userInfo = getSharedPreferences("_userloginMsg", Context.MODE_PRIVATE);
+//	   	String _userid = userInfo.getString("_userid", "");
+	   	
+	}
+	
+	private void initView(){
+		mHost = (TabHost) findViewById(R.id.center_page_tabhost);
+		_pageTextView = (TextView) findViewById(R.id.center_page_textview);
+		_writeEssayBt = (Button) findViewById(R.id.center_page_title_right_bt);
+		
 		mHost.setup(localManager);
 		mHost.addTab(mHost.newTabSpec("STORY").setIndicator("STORY")
 				.setContent(new Intent(this, SildingCenterStoryPageActivity.class)));
@@ -53,11 +65,15 @@ public class SildingCenterPageActivity extends Activity implements OnCheckedChan
 		radioderGroup = (RadioGroup) findViewById(R.id.center_page_radios);
 		radioderGroup.setOnCheckedChangeListener(this);
 		
-		setSildingMenu();
-//		SharedPreferences userInfo = getSharedPreferences("_userloginMsg", Context.MODE_PRIVATE);
-//	   	String _userid = userInfo.getString("_userid", "");
-	   	
+		_writeEssayBt.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(SildingCenterPageActivity.this, SildingCenterWriteEssayPageActivity.class));
+			}
+		});
+		
 	}
+	
 	
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -65,10 +81,12 @@ public class SildingCenterPageActivity extends Activity implements OnCheckedChan
 		case R.id.center_page_story:
 			_pageTextView.setText(R.string.story);
 			mHost.setCurrentTabByTag("STORY");
+			_writeEssayBt.setVisibility(View.INVISIBLE);
 			break;
 		case R.id.center_page_essay:
 			_pageTextView.setText(R.string.essay);
 			mHost.setCurrentTabByTag("ESSAY");
+			_writeEssayBt.setVisibility(View.VISIBLE);
 			break;
 		}
 	}

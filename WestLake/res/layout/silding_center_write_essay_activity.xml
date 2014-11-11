@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/write_essay"
+        android:layout_width="fill_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/linear_down_color" >
+
+        <TextView
+            android:id="@+id/write_essay_title"
+            android:layout_width="wrap_content"
+            android:layout_height="45dip"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/write_essay"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/write_essay_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="45dip"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="12dip"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/selected"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/write_essay_send"
+            android:layout_width="wrap_content"
+            android:layout_height="45dip"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="12dip"
+            android:gravity="center"
+            android:text="@string/publish"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/write_essay_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/linear_all_color"
+        android:gravity="top"
+        android:hint="@string/writesomething"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:padding="10dp"
+        android:scrollbars="vertical"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/linear_lesstop_color" >
+
+        <EditText
+            android:id="@+id/write_essay_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/tag"
+            android:padding="10dp"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/wirte_essay_pb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="@string/pbtoall"
+            android:textColor="@color/selected"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/wirte_essay_pb"
+            android:src="@drawable/camera" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shareto"
+            android:textSize="18sp"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/share_sina_pic"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp" />
+        
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/share_txwb_pic"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp" />
+        
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/share_pyq_pic"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp" />
+    </LinearLayout>
+
+</LinearLayout>

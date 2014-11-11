@@ -20,26 +20,6 @@ public class Picutil {
 	private static final Logger logger = LoggerFactory.getLogger(Picutil.class);
 
 	public static Bitmap returnBitMap(String url) {
-		// HttpGet get = new HttpGet(url);
-		// HttpClient client = new DefaultHttpClient();
-		// Bitmap pic = null;
-		// try {
-		// HttpResponse response = client.execute(get);
-		// HttpEntity entity = response.getEntity();
-		// InputStream is = entity.getContent();
-		// if (is != null) {
-		// BitmapFactory.Options options = new BitmapFactory.Options();
-		// options.inJustDecodeBounds = false;
-		// options.inSampleSize = 2;
-		// pic = BitmapFactory.decodeStream(is, null, options);
-		// }
-		//
-		// } catch (ClientProtocolException e) {
-		// e.printStackTrace();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// return pic;
 
 		final HttpClient client = new DefaultHttpClient();
 		final HttpGet getRequest = new HttpGet(url);

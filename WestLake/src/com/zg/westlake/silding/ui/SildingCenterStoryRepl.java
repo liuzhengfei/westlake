@@ -16,9 +16,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -42,6 +44,7 @@ public class SildingCenterStoryRepl extends Activity {
 	private TextView _titleTv;
 	
 	private ProgressDialog progressDialog;
+	private boolean iscansend = false;
 	private static final int SEND_FINISH = 1009;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,13 +82,40 @@ public class SildingCenterStoryRepl extends Activity {
 				SildingCenterStoryRepl.this.finish();
 			}
 		});
+		
+		_contentEt.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				String tx = _contentEt.getText().toString();
+				if(tx!=null&&!"".equals(tx)){
+					_sendTv.setTextColor(SildingCenterStoryRepl.this.getResources().getColor(R.color.selected));
+					iscansend = true;
+				}else{
+					_sendTv.setTextColor(SildingCenterStoryRepl.this.getResources().getColor(R.color.gray));
+					iscansend = false;
+				}
+			}
+		});
 		_sendTv.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				sendData();
-				progressDialog = new ProgressDialog(SildingCenterStoryRepl.this);
-				progressDialog.setMessage("正在发送中");
-				progressDialog.show();
+				if (iscansend) {
+					sendData();
+					progressDialog = new ProgressDialog(SildingCenterStoryRepl.this);
+					progressDialog.setMessage("正在发送中");
+					progressDialog.show();
+				}
 			}
 		});
 		

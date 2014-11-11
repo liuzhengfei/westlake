@@ -56,7 +56,7 @@ public class SildingCenterStoryPageActivity extends Activity {
 	private SildingCenterStoryListAdapter _storyListAdapter;
 	private CustomListView _mListView;
 	private int _startPage = 1;
-	private int _pageCount = 4;
+	private int _pageCount = 5;
 	private String totalpage = null;
 	private String totalcount = null;
 	private ProgressDialog progressDialog;
@@ -77,9 +77,11 @@ public class SildingCenterStoryPageActivity extends Activity {
 		_storyListAdapter = new SildingCenterStoryListAdapter(this, _storyList);
 		_mListView = (CustomListView) findViewById(R.id.silding_center_fullrefresh);
 		_mListView.setAdapter(_storyListAdapter);
+		
 		progressDialog = new ProgressDialog(this);
     	progressDialog.setMessage("正在努力加载中");  //正在加载
     	progressDialog.show();
+		
 		_mListView.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {// 下拉刷新
@@ -134,8 +136,8 @@ public class SildingCenterStoryPageActivity extends Activity {
 			switch (msg.what) {
 			case INIT_LISTVIEW:
 				if(_storyListAdapter!=null){
-					_storyListAdapter.mList = (List<CenterStoryModel>) msg.obj;
 					progressDialog.dismiss();
+					_storyListAdapter.mList = (List<CenterStoryModel>) msg.obj;
 					changeLoadState();
 					_storyListAdapter.notifyDataSetChanged();
 				}

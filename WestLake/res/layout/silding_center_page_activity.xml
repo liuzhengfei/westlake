@@ -12,23 +12,32 @@
 
         <TextView
             android:id="@+id/center_page_textview"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="45dip"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
             android:text="@string/story"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
             android:textColor="@color/black"
             android:textSize="20sp" >
         </TextView>
 
         <Button
             android:id="@+id/center_page_title_left_bt"
+            android:layout_gravity="left|center_vertical"
             android:layout_width="24dip"
             android:layout_height="24dip"
-            android:layout_gravity="center_vertical"
             android:layout_marginLeft="12dip"
             android:background="@drawable/menu_top" >
         </Button>
+        
+        <Button android:id="@+id/center_page_title_right_bt"
+            android:layout_gravity="right|center_vertical"
+            android:layout_width="24dip"
+            android:layout_height="24dip"
+            android:layout_marginRight="12dip"
+            android:background="@drawable/write_essay"
+            android:visibility="gone"/>
+        
     </FrameLayout>
 
     <TabHost
